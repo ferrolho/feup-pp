@@ -1,0 +1,13 @@
+/**
+ * Custom CSS for the C++ 11 presentation.
+ * Author: Henrique Ferrolho, João Pereira
+ */
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+	text-transform: initial;
+}
