@@ -65,31 +65,30 @@
 				</p>
 			</section>
 
-			<section>
+			<section id="toc">
 				<h2>Table of contents</h2>
 
 				<ul>
-					<li>initializer_list</li>
-					<li>auto type</li>
-					<li>range-based for loop</li>
-					<li>nullptr</li>
-					<li>enum class</li>
-					<li>static_assert</li>
-					<li>delegating constructor</li>
-					<li>constexpr</li>
-					<li>final - delete - override</li>
-					<li>lambda functions</li>
-					<li>rvalue reference</li>
+					<li><a href="#/initializer_list">initializer_list</a></li>
+					<li><a href="#/auto-type">auto type</a></li>
+					<li><a href="#/range-based-for-loop">range-based for loop</a></li>
+					<li><a href="#/nullptr">nullptr</a></li>
+					<li><a href="#/enum-class">enum class</a></li>
+					<li><a href="#/static_assert">static_assert</a></li>
+					<li><a href="#/delegating-constructor">delegating constructor</a></li>
+					<li><a href="#/constexpr">constexpr</a></li>
+					<li><a href="#/final-delete-override">final - delete - override</a></li>
+					<li><a href="#/lambda-functions">lambda functions</a></li>
+					<li><a href="#/rvalue-reference">rvalue reference</a></li>
 				</ul>
 			</section>
 
-			<section>
+			<section id="initializer_list">
 				<h2>initializer_list</h2>
 
 				<p data-markdown>
+					C++ 03
 					```
-					// C++ 03
-
 					int arr[5] = {1, 2, 3, 4, 5};
 
 					vector&lt;int&gt; vec;
@@ -98,10 +97,10 @@
 					vec.push_back(3);
 					vec.push_back(4);
 					vec.push_back(5);
+					```
 
-
-					// C++ 11
-
+					C++ 11
+					```
 					int arr[5] = {1, 2, 3, 4, 5};
 
 					vector&lt;int&gt; vec = {1, 2, 3, 4, 5};
@@ -116,73 +115,164 @@
 			</section>
 
 			<section>
-				<h2>auto type</h2>
+				<section id="auto-type">
+					<h2>auto type</h2>
 
-				<p>
-				</p>
+					<p data-markdown>
+						C++ 03
+						```
+						int x = 4;
+
+						double y = 3.14;
+
+						int z = x;
+						```
+
+						C++ 11
+						```
+						auto x = 4;		// x is an integer
+
+						auto y = 3.14; 	// y is a double
+
+						auto z = x;		// z is an integer
+						```
+					</p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section>
+					<h2>auto type</h2>
+
+					<p data-markdown>
+						C++ 03
+						```
+						vector&lt;int&gt; vec;
+
+						vector&lt;int&gt;::iterator itr = vec.iterator();
+						```
+
+						C++ 11
+						```
+						vector&lt;int&gt; vec;
+
+						auto itr = vec.iterator();
+						```
+					</p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section>
+					<h2>auto type</h2>
+
+					<p>
+						less typing == <span class="fragment">less typos</span>
+					</p>
+
+					<p>=> <span class="fragment">IDE plays a more important role</span></p>
+
+					<aside class="notes">
+					</aside>
+				</section>
 			</section>
 
-			<section>
+			<section id="range-based-for-loop">
 				<h2>range-based for loop</h2>
 
-				<p>
+				<p data-markdown>
+					```
+					```
 				</p>
+
+				<aside class="notes">
+				</aside>
 			</section>
 
-			<section>
+			<section id="nullptr">
 				<h2>nullptr</h2>
 
-				<p>
+				<p data-markdown>
+					```
+					```
 				</p>
+
+				<aside class="notes">
+				</aside>
 			</section>
 
-			<section>
+			<section id="enum-class">
 				<h2>enum class</h2>
 
-				<p>
+				<p data-markdown>
+					```
+					```
 				</p>
+
+				<aside class="notes">
+				</aside>
 			</section>
 
-			<section>
+			<section id="static_assert">
 				<h2>static_assert</h2>
 
-				<p>
+				<p data-markdown>
+					```
+					```
 				</p>
+
+				<aside class="notes">
+				</aside>
 			</section>
 
-			<section>
+			<section id="delegating-constructor">
 				<h2>delegating constructor</h2>
 
-				<p>
+				<p data-markdown>
+					```
+					```
 				</p>
+
+				<aside class="notes">
+				</aside>
 			</section>
 
-			<section>
+			<section id="constexpr">
 				<h2>constexpr</h2>
 
-				<p>
+				<p data-markdown>
+					```
+					```
 				</p>
+
+				<aside class="notes">
+				</aside>
 			</section>
 
-			<section>
-				<h2>auto type</h2>
-
-				<p>
-				</p>
-			</section>
-
-			<section>
+			<section id="lambda-functions">
 				<h2>lambda functions</h2>
 
-				<p>
+				<p data-markdown>
+					```
+					```
 				</p>
+
+				<aside class="notes">
+				</aside>
 			</section>
 
-			<section>
+			<section id="rvalue-reference">
 				<h2>rvalue reference</h2>
 
-				<p>
+				<p data-markdown>
+					```
+					```
 				</p>
+
+				<aside class="notes">
+				</aside>
 			</section>
 
 			<section style="text-align: left;">
