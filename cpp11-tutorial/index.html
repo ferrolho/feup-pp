@@ -70,7 +70,7 @@
 
 				<ul>
 					<li><a href="#/initializer_list">initializer_list</a></li>
-					<li><a href="#/auto-type">auto type</a></li>
+					<li><a href="#/auto-type">auto type</a> - <a href="#/decltype">decltype</a></li>
 					<li><a href="#/range-based-for-loop">range-based for loop</a></li>
 					<li><a href="#/nullptr">nullptr</a></li>
 					<li><a href="#/enum-class">enum class</a></li>
@@ -177,6 +177,50 @@
 					<aside class="notes">
 					</aside>
 				</section>
+			</section>
+
+			<section id="new-return-value-syntax">
+				<h2>new return value syntax</h2>
+
+				<p data-markdown>
+					C++ 03
+					```c++
+					int multiply(int x, int y);
+					```
+
+					C++ 11
+					```c++
+					auto multiply(int x, int y) -> int;
+					```
+				</p>
+
+				<br>
+				<p class="fragment">Why is this any good..?</p>
+
+				<aside class="notes">
+				</aside>
+			</section>
+
+			<section>
+				<section id="decltype">
+					<h2>decltype</h2>
+
+					<h4>declared type inspection</h4>
+
+					<p data-markdown>
+						C++ 11
+						```c++
+						int x = 3;
+
+						decltype(x) y = x;	// same thing as `auto y = x;`
+						```
+					</p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section data-markdown="slides/decltype-2.md"></section>
 			</section>
 
 			<section id="range-based-for-loop">
