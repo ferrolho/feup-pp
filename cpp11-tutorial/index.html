@@ -118,8 +118,8 @@
 				</aside>
 			</section>
 
-			<section>
-				<section id="auto-type">
+			<section id="auto-type">
+				<section>
 					<h2>auto type</h2>
 
 					<p data-markdown>
@@ -205,8 +205,8 @@
 				</aside>
 			</section>
 
-			<section>
-				<section id="decltype">
+			<section id="decltype">
+				<section>
 					<h2>decltype</h2>
 
 					<h4>declared type inspection</h4>
@@ -232,8 +232,8 @@
 				<section data-markdown="slides/range-based-for-loop-2.md"></section>
 			</section>
 
-			<section>
-				<section id="nullptr">
+			<section id="nullptr">
+				<section>
 					<h2>nullptr</h2>
 
 					<p data-markdown>
@@ -328,15 +328,43 @@
 			</section>
 
 			<section id="lambda-functions">
-				<h2>lambda functions</h2>
+				<section>
+					<h2>lambda functions</h2>
 
-				<p data-markdown>
-					```c++
-					```
-				</p>
+					<h4>(aka) anonymous functions</h4>
 
-				<aside class="notes">
-				</aside>
+					<p data-markdown>
+						```c++
+						/*
+						* lambda syntax:
+						*
+						*	[capture](parameters) -> return_type { body }
+						*
+						*	*parameters*, and *return_type* are optional
+						*/
+
+						[] {} // valid lambda function
+						```
+
+						```c++
+						cout << [](int x, int y) { return x + y; } (3, 4) << endl;
+
+						// or
+
+						auto func = [](int x, int y) { return x + y; };
+						cout << func(3, 4) << endl;
+						```
+					</p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section data-markdown="slides/lambda-functions-2.md"></section>
+
+				<section data-markdown="slides/lambda-functions-3.md"></section>
+
+				<section data-markdown="slides/lambda-functions-4.md"></section>
 			</section>
 
 			<section id="rvalue-reference">
