@@ -246,7 +246,7 @@
 						void func(int n);
 						void func(char* s);
 
-						func(NULL);	// this will call `func(int)`...
+						func(NULL);	// calls `func(int)`...
 						```
 
 						C++ 11
@@ -254,7 +254,7 @@
 						void func(int n);
 						void func(char* s);
 
-						func(nullptr);	// this will call `func(char*)` - yay!
+						func(nullptr);	// calls `func(char*)` - yay!
 						```
 					</p>
 
@@ -368,15 +368,75 @@
 			</section>
 
 			<section id="rvalue-reference">
-				<h2>rvalue reference</h2>
+				<section>
+					<h2>rvalue reference</h2>
 
-				<p data-markdown>
-					```c++
-					```
-				</p>
+					<h4>understanding lvalue and rvalue</h4>
 
-				<aside class="notes">
-				</aside>
+					<div class="fragment">
+						<p><strong>lvalue</strong></p>
+
+						<ul>
+							<li>persist beyond a single expression</li>
+							<li>objects that have a name</li>
+							<li>all variables, including const variables, are lvalues.</li>
+						</ul>
+					</div>
+
+					<div class="fragment">
+						<p><strong>rvalue</strong></p>
+
+						<ul>
+							<li>temporary values</li>
+							<li>do not persist beyond the expression that uses them</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section data-markdown="slides/rvalue-reference-2.md"></section>
+
+				<section>
+					<h2>rvalue reference</h2>
+
+					<h4>function overloading</h4>
+
+					<p data-markdown>
+						```c++
+						void printInt(int& i) { cout << "lvalue reference: " << i << endl; }
+						void printInt(int&& i) { cout << "rvalue reference: " << i << endl; }
+						```
+
+						```c++
+						int a = 4;
+						printInt(a);	// calls printInt(int& i)
+
+						printInt(6);	// calls printInt(int&& i)
+						```
+
+						Warning!
+						```c++
+						/*
+						* Adding this function would cause a compilation error.
+						* The compiler wouldn't know which function to call for both calls.
+						*/
+						void printInt(int i) { cout << i << endl; }
+						```
+					</p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section data-markdown="slides/rvalue-reference-4.md"></section>
+
+				<section data-markdown="slides/rvalue-reference-5.md"></section>
+
+				<section data-markdown="slides/rvalue-reference-6.md"></section>
+
+				<section data-markdown="slides/rvalue-reference-7.md"></section>
 			</section>
 
 			<section style="text-align: left;">
@@ -384,13 +444,13 @@
 
 				<p>
 					- Learn C++ 11 in 20 Minutes - <a href="https://www.youtube.com/watch?v=U6mgsPqV32A">Part I</a> - <a href="https://www.youtube.com/watch?v=Lt0ASrloGSE">Part II</a>
-					
+
 					<br>
-					
+
 					- <a href="https://www.youtube.com/watch?v=IOkgBrXCtfo">C++ 11: Rvalue Reference - Move Semantics</a>
-					
+
 					<br>
-					
+
 					- <a href="http://www.cprogramming.com/c++11/what-is-c++0x.html">Alex Allain C++ 11 tutorial series</a>
 				</p>
 			</section>
