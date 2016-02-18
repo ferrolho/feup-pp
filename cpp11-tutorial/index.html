@@ -232,16 +232,51 @@
 				<section data-markdown="slides/range-based-for-loop-2.md"></section>
 			</section>
 
-			<section id="nullptr">
-				<h2>nullptr</h2>
+			<section>
+				<section id="nullptr">
+					<h2>nullptr</h2>
 
-				<p data-markdown>
-					```c++
-					```
-				</p>
+					<p data-markdown>
+						```c++
+						#define NULL 0
+						```
 
-				<aside class="notes">
-				</aside>
+						C++ 03
+						```c++
+						void func(int n);
+						void func(char* s);
+
+						func(NULL);	// this will call `func(int)`...
+						```
+
+						C++ 11
+						```c++
+						void func(int n);
+						void func(char* s);
+
+						func(nullptr);	// this will call `func(char*)` - yay!
+						```
+					</p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section>
+					<h2>nullptr</h2>
+
+					<h4>std::nullptr_t - a new unique type</h4>
+
+					<p data-markdown>
+						C++ 11
+						```c++
+						/*
+						* This function takes only nullptr, and nothing else.
+						*/
+						void func(std::nullptr_t);
+						```
+					</p>
+				</section>
 			</section>
 
 			<section id="enum-class">
