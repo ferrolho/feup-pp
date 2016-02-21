@@ -21,7 +21,7 @@ class person {
 }
 ```
 
-<p class="fragment">Now it's possible! :D</p>
+<p class="fragment">Now it's possible!</p>
 
 <aside class="notes">
 C++03
