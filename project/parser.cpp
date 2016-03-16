@@ -74,57 +74,104 @@ int main(int argc, char* argv[]) {
 	cout << "No. samples: " << gtexAnalysisFile.samplesNum << endl;
 	cout << "-----------------" << endl;
 
-	getline(gtexAnalysisIn, line);
+	cout << "> Reading giant genes file (~5gb takes time, go grab a snack) ... " << flush;
 
+	getline(gtexAnalysisIn, line);
 	gtexAnalysisFile.genesHeader = splitTSV(line);
+
+	for (unsigned int i = 0; i < gtexAnalysisFile.genesNum; i++) {
+		getline(gtexAnalysisIn, line);
+		gtexAnalysisFile.genesData.push_back(splitTSV(line));
+	}
+
+	gtexAnalysisIn.close();
+	cout << "OK!" << endl;	
 
 	// this map makes it possible to return the column of a certain sample in O(1)
 	map<string, unsigned int> sampleColumnMap;
 
+	for (unsigned int i = 0; i < gtexAnalysisFile.genesHeader.size(); i++)
+		sampleColumnMap[gtexAnalysisFile.genesHeader[i]] = i;
+
 	/*
 	* Build [tissue -> samples] multimap
 	*/
+	cout << "> Reading samples file ... " << flush;
+
 	ifstream gtexDataIn;
 	gtexDataIn.open(argv[2]);
 	getline(gtexDataIn, line);
 
-	multimap<string,string> tissueSampleMap;
+	multimap<string,string> tissueSamplesMap;
 
 	for (unsigned int i = 0; i < gtexAnalysisFile.samplesNum; i++) {
 		getline(gtexDataIn, line);
 
 		vector<string> tokens = splitTSV(line);
 
-		tissueSampleMap.insert(pair<string, string>(tokens[6], tokens[0]));
+		tissueSamplesMap.insert(pair<string, string>(tokens[6], tokens[0]));
 	}
+
+	gtexDataIn.close();
+	cout << "OK!" << endl;
 
 	// ignore tissues with less than 10 samples
-	for(auto it = tissueSampleMap.begin(), end = tissueSampleMap.end(); it != end; it = tissueSampleMap.upper_bound(it->first)) {
-		if (tissueSampleMap.count(it->first) < 10)
-			tissueSampleMap.erase(it->first);
+	for (auto it = tissueSamplesMap.cbegin(); it != tissueSamplesMap.cend();) {
+		if (tissueSamplesMap.count(it->first) < 10) {
+			auto nextIt = tissueSamplesMap.upper_bound(it->first);
+
+			tissueSamplesMap.erase(it->first);
+
+			it = nextIt;
+		} else {
+			it = tissueSamplesMap.upper_bound(it->first);
+		}
 	}
 
-	for (auto it = tissueSampleMap.begin(), end = tissueSampleMap.end(); it != end; it = tissueSampleMap.upper_bound(it->first))
-		cout << it->first << " -> " << tissueSampleMap.count(it->first) << endl;
-
+	//for (auto it = tissueSamplesMap.begin(), end = tissueSamplesMap.end(); it != end; it = tissueSamplesMap.upper_bound(it->first))
+	//	cout << it->first << " -> " << tissueSamplesMap.count(it->first) << endl;
 
 	/*
 	* Output genes file for each tissue
 	*/
-	for (auto it = tissueSampleMap.begin(), end = tissueSampleMap.end(); it != end; it = tissueSampleMap.upper_bound(it->first)) {
-		ofstream gtexAnalysisCopyOut;
-		gtexAnalysisCopyOut.open("gtex/rna-seq-data/tissues-output/" + it->first + ".txt");
+	for (auto it = tissueSamplesMap.begin(), end = tissueSamplesMap.end(); it != end; it = tissueSamplesMap.upper_bound(it->first)) {
+		string tissueName = it->first;
 
-		gtexAnalysisCopyOut << gtexAnalysisFile.header << endl;
-		gtexAnalysisCopyOut << gtexAnalysisFile.genesNum << "\t" << gtexAnalysisFile.samplesNum << endl;
+		cout << "> Generating " << tissueName << ".txt ... " << flush;
 
-		for (unsigned int i = 0; i < gtexAnalysisFile.genesHeader.size(); i++) {
-			gtexAnalysisCopyOut << gtexAnalysisFile.genesHeader[i];
+		ofstream fout;
+		fout.open("gtex/rna-seq-data/tissues-output/" + tissueName + ".txt");
 
-			gtexAnalysisCopyOut << (i == gtexAnalysisFile.genesHeader.size() - 1 ? "\n" : "\t");
+		fout << gtexAnalysisFile.header << endl;
+		fout << gtexAnalysisFile.genesNum << "\t" << tissueSamplesMap.count(tissueName) << endl;
+
+		// Name and Description columns headers
+		for (unsigned int i = 0; i < 2; i++)
+			fout << gtexAnalysisFile.genesHeader[i] << "\t";
+
+		auto samplesRange = tissueSamplesMap.equal_range(tissueName);
+		for (auto it = samplesRange.first; it != samplesRange.second;) {
+			fout << it->second;
+
+			fout << (++it != samplesRange.second ? "\t" : "\n");
 		}
 
-		gtexAnalysisCopyOut.close();
+		for (auto geneData : gtexAnalysisFile.genesData) {
+			// Name and Description columns data
+			for (unsigned int i = 0; i < 2; i++)
+				fout << geneData[i] << "\t";
+
+			for (auto it = samplesRange.first; it != samplesRange.second;) {
+				// some samples are not present in the giant genes file; they are marked as N/A in the output files
+				fout << (sampleColumnMap[it->second] < 2 ? "N/A" : geneData[sampleColumnMap[it->second]]);
+
+				fout << (++it != samplesRange.second ? "\t" : "\n");
+			}
+		}
+
+		fout.close();
+
+		cout << "OK!" << endl;
 	}
 
 	return 0;
