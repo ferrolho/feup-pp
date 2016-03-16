@@ -6,6 +6,14 @@
 #include <sstream>
 using namespace std;
 
+struct gtexAnalysisFile_t {
+	string header;
+	unsigned int genesNum, samplesNum;
+
+	vector<string> genesHeader;
+	vector<vector<string>> genesData;
+};
+
 void tokenize(const string& str, vector<string>& tokens, const string& delimiters = " ") {
 	// skip delimiters at beginning.
 	string::size_type lastPos = str.find_first_not_of(delimiters, 0);
@@ -49,36 +57,75 @@ int main(int argc, char* argv[]) {
 
 	string line;
 
-	ifstream gtexAnalysis;
-	gtexAnalysis.open(argv[1]);
-	getline(gtexAnalysis, line);
+	/*
+	* Read genes file header (the ~5gb .txt file)
+	*/
+	ifstream gtexAnalysisIn;
+	gtexAnalysisIn.open(argv[1]);
 
-	unsigned int genesNum, samplesNum;
-	gtexAnalysis >> genesNum >> samplesNum;
-	gtexAnalysis.ignore();
+	gtexAnalysisFile_t gtexAnalysisFile;
+	gtexAnalysisIn >> gtexAnalysisFile.header;
+
+	gtexAnalysisIn >> gtexAnalysisFile.genesNum >> gtexAnalysisFile.samplesNum;
+	gtexAnalysisIn.ignore();
 
 	cout << "-----------------" << endl;
-	cout << "No. genes: " << genesNum << endl;
-	cout << "No. samples: " << samplesNum << endl;
+	cout << "No. genes: " << gtexAnalysisFile.genesNum << endl;
+	cout << "No. samples: " << gtexAnalysisFile.samplesNum << endl;
 	cout << "-----------------" << endl;
 
+	getline(gtexAnalysisIn, line);
 
-	ifstream gtexData;
-	gtexData.open(argv[2]);
-	getline(gtexData, line);
+	gtexAnalysisFile.genesHeader = splitTSV(line);
+
+	// this map makes it possible to return the column of a certain sample in O(1)
+	map<string, unsigned int> sampleColumnMap;
+
+	/*
+	* Build [tissue -> samples] multimap
+	*/
+	ifstream gtexDataIn;
+	gtexDataIn.open(argv[2]);
+	getline(gtexDataIn, line);
 
 	multimap<string,string> tissueSampleMap;
 
-	for (unsigned int i = 0; i < samplesNum; i++) {
-		getline(gtexData, line);
+	for (unsigned int i = 0; i < gtexAnalysisFile.samplesNum; i++) {
+		getline(gtexDataIn, line);
 
 		vector<string> tokens = splitTSV(line);
 
 		tissueSampleMap.insert(pair<string, string>(tokens[6], tokens[0]));
 	}
 
-	for (auto sample : tissueSampleMap)
-		cout << sample.first << " >>>> " << sample.second << endl;
+	// ignore tissues with less than 10 samples
+	for(auto it = tissueSampleMap.begin(), end = tissueSampleMap.end(); it != end; it = tissueSampleMap.upper_bound(it->first)) {
+		if (tissueSampleMap.count(it->first) < 10)
+			tissueSampleMap.erase(it->first);
+	}
+
+	for (auto it = tissueSampleMap.begin(), end = tissueSampleMap.end(); it != end; it = tissueSampleMap.upper_bound(it->first))
+		cout << it->first << " -> " << tissueSampleMap.count(it->first) << endl;
+
+
+	/*
+	* Output genes file for each tissue
+	*/
+	for (auto it = tissueSampleMap.begin(), end = tissueSampleMap.end(); it != end; it = tissueSampleMap.upper_bound(it->first)) {
+		ofstream gtexAnalysisCopyOut;
+		gtexAnalysisCopyOut.open("gtex/rna-seq-data/tissues-output/" + it->first + ".txt");
+
+		gtexAnalysisCopyOut << gtexAnalysisFile.header << endl;
+		gtexAnalysisCopyOut << gtexAnalysisFile.genesNum << "\t" << gtexAnalysisFile.samplesNum << endl;
+
+		for (unsigned int i = 0; i < gtexAnalysisFile.genesHeader.size(); i++) {
+			gtexAnalysisCopyOut << gtexAnalysisFile.genesHeader[i];
+
+			gtexAnalysisCopyOut << (i == gtexAnalysisFile.genesHeader.size() - 1 ? "\n" : "\t");
+		}
+
+		gtexAnalysisCopyOut.close();
+	}
 
 	return 0;
 }
