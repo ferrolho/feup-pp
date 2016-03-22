@@ -134,6 +134,8 @@ int main(int argc, char* argv[]) {
 	// maps each tissue name to its file output stream
 	map<string, shared_ptr<ofstream>> tissuesFilesMap;
 
+	ostringstream outputStream;
+
 	/*
 	* Output genes header for each tissue file
 	*/
@@ -145,7 +147,10 @@ int main(int argc, char* argv[]) {
 		string filename = "gtex/rna-seq-data/tissues-output/" + tissueName + ".txt";
 		tissuesFilesMap[tissueName] = make_shared<ofstream> (filename);
 
-		stringstream outputStream;
+		// resetting stream
+		outputStream.str(string());
+		outputStream.clear();
+
 		outputStream << gtexAnalysisFile.header << endl;
 		outputStream << gtexAnalysisFile.genesNum << '\t' << tissueSamplesMap.count(tissueName) << endl;
 
@@ -169,7 +174,9 @@ int main(int argc, char* argv[]) {
 		vector<string> geneData = splitTSV(line);
 
 		for (auto pair : tissuesFilesMap) {
-			stringstream outputStream;
+			// resetting stream
+			outputStream.str(string());
+			outputStream.clear();
 
 			// Name and Description columns data
 			for (unsigned int i = 0; i < 2; i++)
