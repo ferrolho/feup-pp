@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
 	map<string, shared_ptr<ofstream>> tissuesFilesMap;
 
 	/*
-	* Output genes file for each tissue
+	* Output genes header for each tissue file
 	*/
 	for (auto it = tissueSamplesMap.begin(), end = tissueSamplesMap.end(); it != end; it = tissueSamplesMap.upper_bound(it->first)) {
 		string tissueName = it->first;
@@ -145,19 +145,19 @@ int main(int argc, char* argv[]) {
 		string filename = "gtex/rna-seq-data/tissues-output/" + tissueName + ".txt";
 		tissuesFilesMap[tissueName] = make_shared<ofstream> (filename);
 
-		*tissuesFilesMap[tissueName] << gtexAnalysisFile.header << endl;
-		*tissuesFilesMap[tissueName] << gtexAnalysisFile.genesNum << "\t" << tissueSamplesMap.count(tissueName) << endl;
+		stringstream outputStream;
+		outputStream << gtexAnalysisFile.header << endl;
+		outputStream << gtexAnalysisFile.genesNum << '\t' << tissueSamplesMap.count(tissueName) << endl;
 
 		// Name and Description columns headers
 		for (unsigned int i = 0; i < 2; i++)
-			*tissuesFilesMap[tissueName] << gtexAnalysisFile.genesHeader[i] << "\t";
+			outputStream << gtexAnalysisFile.genesHeader[i] << '\t';
 
 		auto samplesRange = tissueSamplesMap.equal_range(tissueName);
-		for (auto it = samplesRange.first; it != samplesRange.second;) {
-			*tissuesFilesMap[tissueName] << it->second;
+		for (auto it = samplesRange.first; it != samplesRange.second; it++)
+			outputStream << it->second << (next(it) != samplesRange.second ? '\t' : '\n');
 
-			*tissuesFilesMap[tissueName] << (++it != samplesRange.second ? "\t" : "\n");
-		}
+		*tissuesFilesMap[tissueName] << outputStream.str();
 
 		cout << "OK!" << endl;
 	}
@@ -169,19 +169,23 @@ int main(int argc, char* argv[]) {
 		vector<string> geneData = splitTSV(line);
 
 		for (auto pair : tissuesFilesMap) {
-			string tissueName = pair.first;
+			stringstream outputStream;
 
 			// Name and Description columns data
 			for (unsigned int i = 0; i < 2; i++)
-				*tissuesFilesMap[tissueName] << geneData[i] << "\t";
+				outputStream << geneData[i] << "\t";
+
+			string tissueName = pair.first;
 
 			auto samplesRange = tissueSamplesMap.equal_range(tissueName);
-			for (auto it = samplesRange.first; it != samplesRange.second;) {
+			for (auto it = samplesRange.first; it != samplesRange.second; it++) {
 				// some samples are not present in the giant genes file; they are marked as N/A in the output files
-				*tissuesFilesMap[tissueName] << (sampleColumnMap[it->second] < 2 ? "N/A" : geneData[sampleColumnMap[it->second]]);
+				outputStream << (sampleColumnMap[it->second] < 2 ? "N/A" : geneData[sampleColumnMap[it->second]]);
 
-				*tissuesFilesMap[tissueName] << (++it != samplesRange.second ? "\t" : "\n");
+				outputStream << (next(it) != samplesRange.second ? '\t' : '\n');
 			}
+
+			*tissuesFilesMap[tissueName] << outputStream.str();
 		}
 
 		printf("\r%5.1f %%", (i + 1) * 100.0 / gtexAnalysisFile.genesNum);
