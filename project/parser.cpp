@@ -49,7 +49,7 @@ vector<string> splitTSV(const string& str) {
 	return tokens;
 }
 
-multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, const gtexAnalysisFile_t& gtexAnalysisFile) {
+multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, const gtexAnalysisFile_t& gtexAnalysisFile, map<string, unsigned int>& sampleColumnMap) {
 	ifstream gtexDataIn;
 	gtexDataIn.open(samplesFilename);
 
@@ -65,7 +65,8 @@ multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, 
 
 		vector<string> tokens = splitTSV(line);
 
-		tissueSamplesMap.insert(pair<string, string>(tokens[6], tokens[0]));
+		if (sampleColumnMap[tokens[0]] >= 2)
+			tissueSamplesMap.emplace(tokens[6], tokens[0]);
 	}
 
 	gtexDataIn.close();
@@ -128,7 +129,7 @@ int main(int argc, char* argv[]) {
 	/*
 	* Build [tissue -> samples] multimap
 	*/
-	multimap<string, string> tissueSamplesMap = buildTissueToSamplesMap(argv[2], gtexAnalysisFile);
+	multimap<string, string> tissueSamplesMap = buildTissueToSamplesMap(argv[2], gtexAnalysisFile, sampleColumnMap);
 
 
 	// maps each tissue name to its file output stream
@@ -185,12 +186,8 @@ int main(int argc, char* argv[]) {
 			string tissueName = pair.first;
 
 			auto samplesRange = tissueSamplesMap.equal_range(tissueName);
-			for (auto it = samplesRange.first; it != samplesRange.second; it++) {
-				// some samples are not present in the giant genes file; they are marked as N/A in the output files
-				outputStream << (sampleColumnMap[it->second] < 2 ? "N/A" : geneData[sampleColumnMap[it->second]]);
-
-				outputStream << (next(it) != samplesRange.second ? '\t' : '\n');
-			}
+			for (auto it = samplesRange.first; it != samplesRange.second; it++)
+				outputStream << geneData[sampleColumnMap[it->second]] << (next(it) != samplesRange.second ? '\t' : '\n');
 
 			*tissuesFilesMap[tissueName] << outputStream.str();
 		}
