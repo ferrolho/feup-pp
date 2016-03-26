@@ -7,7 +7,7 @@
 #include <sstream>
 using namespace std;
 
-struct gtexAnalysisFile_t {
+struct giantGenesFile_t {
 	string header;
 	unsigned int genesNum, samplesNum;
 
@@ -49,7 +49,7 @@ vector<string> splitTSV(const string& str) {
 	return tokens;
 }
 
-multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, const gtexAnalysisFile_t& gtexAnalysisFile, map<string, unsigned int>& sampleColumnMap) {
+multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, const giantGenesFile_t& giantGenesFile, map<string, unsigned int>& sampleColumnMap) {
 	ifstream gtexDataIn;
 	gtexDataIn.open(samplesFilename);
 
@@ -60,9 +60,7 @@ multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, 
 
 	multimap<string, string> tissueSamplesMap;
 
-	for (unsigned int i = 0; i < gtexAnalysisFile.samplesNum; i++) {
-		getline(gtexDataIn, line);
-
+	while (getline(gtexDataIn, line)) {
 		vector<string> tokens = splitTSV(line);
 
 		if (sampleColumnMap[tokens[0]] >= 2)
@@ -104,32 +102,31 @@ int main(int argc, char* argv[]) {
 	ifstream gtexAnalysisIn;
 	gtexAnalysisIn.open(argv[1]);
 
-	gtexAnalysisFile_t gtexAnalysisFile;
-	gtexAnalysisIn >> gtexAnalysisFile.header;
+	giantGenesFile_t giantGenesFile;
+	gtexAnalysisIn >> giantGenesFile.header;
 
-	gtexAnalysisIn >> gtexAnalysisFile.genesNum >> gtexAnalysisFile.samplesNum;
+	gtexAnalysisIn >> giantGenesFile.genesNum >> giantGenesFile.samplesNum;
 	gtexAnalysisIn.ignore();
 
 	cout << "-----------------" << endl;
-	cout << "No. genes: " << gtexAnalysisFile.genesNum << endl;
-	cout << "No. samples: " << gtexAnalysisFile.samplesNum << endl;
+	cout << "No. genes: " << giantGenesFile.genesNum << endl;
+	cout << "No. samples: " << giantGenesFile.samplesNum << endl;
 	cout << "-----------------" << endl;
 
 	string line;
 
 	getline(gtexAnalysisIn, line);
-	gtexAnalysisFile.genesHeader = splitTSV(line);
+	giantGenesFile.genesHeader = splitTSV(line);
 
 	// this map makes it possible to return the column of a certain sample in O(1)
 	map<string, unsigned int> sampleColumnMap;
-	for (unsigned int i = 0; i < gtexAnalysisFile.genesHeader.size(); i++)
-		sampleColumnMap[gtexAnalysisFile.genesHeader[i]] = i;
-
+	for (unsigned int i = 0; i < giantGenesFile.genesHeader.size(); i++)
+		sampleColumnMap[giantGenesFile.genesHeader[i]] = i;
 
 	/*
 	* Build [tissue -> samples] multimap
 	*/
-	multimap<string, string> tissueSamplesMap = buildTissueToSamplesMap(argv[2], gtexAnalysisFile, sampleColumnMap);
+	multimap<string, string> tissueSamplesMap = buildTissueToSamplesMap(argv[2], giantGenesFile, sampleColumnMap);
 
 
 	// maps each tissue name to its file output stream
@@ -152,12 +149,12 @@ int main(int argc, char* argv[]) {
 		outputStream.str(string());
 		outputStream.clear();
 
-		outputStream << gtexAnalysisFile.header << endl;
-		outputStream << gtexAnalysisFile.genesNum << '\t' << tissueSamplesMap.count(tissueName) << endl;
+		outputStream << giantGenesFile.header << endl;
+		outputStream << giantGenesFile.genesNum << '\t' << tissueSamplesMap.count(tissueName) << endl;
 
 		// Name and Description columns headers
 		for (unsigned int i = 0; i < 2; i++)
-			outputStream << gtexAnalysisFile.genesHeader[i] << '\t';
+			outputStream << giantGenesFile.genesHeader[i] << '\t';
 
 		auto samplesRange = tissueSamplesMap.equal_range(tissueName);
 		for (auto it = samplesRange.first; it != samplesRange.second; it++)
@@ -170,7 +167,7 @@ int main(int argc, char* argv[]) {
 
 	cout << endl << "> Reading giant genes file (~5gb takes time, go grab a snack) ..." << endl;
 
-	for (unsigned int i = 0; i < gtexAnalysisFile.genesNum; i++) {
+	for (unsigned int i = 0; i < giantGenesFile.genesNum; i++) {
 		getline(gtexAnalysisIn, line);
 		vector<string> geneData = splitTSV(line);
 
@@ -192,7 +189,7 @@ int main(int argc, char* argv[]) {
 			*tissuesFilesMap[tissueName] << outputStream.str();
 		}
 
-		printf("\r%5.1f %%", (i + 1) * 100.0 / gtexAnalysisFile.genesNum);
+		printf("\r%5.1f %%", (i + 1) * 100.0 / giantGenesFile.genesNum);
 	}
 
 	gtexAnalysisIn.close();
