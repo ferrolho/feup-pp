@@ -1,5 +1,6 @@
 #include <cstring>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <map>
 #include <memory>
@@ -49,6 +50,16 @@ vector<string> splitTSV(const string& str) {
 	return tokens;
 }
 
+void outputSamplesByTissueFile(const multimap<string, string>& tissueSamplesMap) {
+	ofstream samplesByTissueFile;
+	samplesByTissueFile.open("samplesByTissue.txt");
+
+	for (auto it = tissueSamplesMap.begin(), end = tissueSamplesMap.end(); it != end; it = tissueSamplesMap.upper_bound(it->first))
+		samplesByTissueFile << "Found " << setw(3) << tissueSamplesMap.count(it->first) << " samples in: " << it->first << endl;
+
+	samplesByTissueFile.close();
+}
+
 multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, const giantGenesFile_t& giantGenesFile, map<string, unsigned int>& sampleColumnMap) {
 	ifstream gtexDataIn;
 	gtexDataIn.open(samplesFilename);
@@ -69,6 +80,8 @@ multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, 
 
 	gtexDataIn.close();
 
+	outputSamplesByTissueFile(tissueSamplesMap);
+
 	// ignore tissues with less than 10 samples
 	for (auto it = tissueSamplesMap.cbegin(); it != tissueSamplesMap.cend();) {
 		if (tissueSamplesMap.count(it->first) < 10) {
@@ -81,9 +94,6 @@ multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, 
 			it = tissueSamplesMap.upper_bound(it->first);
 		}
 	}
-
-	//for (auto it = tissueSamplesMap.begin(), end = tissueSamplesMap.end(); it != end; it = tissueSamplesMap.upper_bound(it->first))
-	//	cout << it->first << " -> " << tissueSamplesMap.count(it->first) << endl;
 
 	cout << "OK!" << endl << endl;
 
