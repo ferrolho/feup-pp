@@ -162,9 +162,8 @@ int main(int argc, char* argv[]) {
 		outputStream << giantGenesFile.header << endl;
 		outputStream << giantGenesFile.genesNum << '\t' << tissueSamplesMap.count(tissueName) << endl;
 
-		// Name and Description columns headers
-		for (unsigned int i = 0; i < 2; i++)
-			outputStream << giantGenesFile.genesHeader[i] << '\t';
+		// Description column header
+		outputStream << giantGenesFile.genesHeader[1] << '\t';
 
 		auto samplesRange = tissueSamplesMap.equal_range(tissueName);
 		for (auto it = samplesRange.first; it != samplesRange.second; it++)
@@ -186,9 +185,8 @@ int main(int argc, char* argv[]) {
 			outputStream.str(string());
 			outputStream.clear();
 
-			// Name and Description columns data
-			for (unsigned int i = 0; i < 2; i++)
-				outputStream << geneData[i] << "\t";
+			// Description column data
+			outputStream << geneData[1] << "\t";
 
 			string tissueName = pair.first;
 
