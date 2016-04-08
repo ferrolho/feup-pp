@@ -1,8 +1,17 @@
 #include <cassert>
 #include <cmath>
+#include <fstream>
 #include <iostream>
 #include <vector>
+
+#include "utilities.h"
+
 using namespace std;
+
+struct tissueFile_t {
+	vector<string> genes;
+	vector<vector<double>> values;
+};
 
 double calcPearson(const vector<double>& x, const vector<double>& y) {
 	assert(x.size() == y.size());
@@ -36,17 +45,42 @@ double calcPearson(const vector<double>& x, const vector<double>& y) {
 	return denominator == 0 ? 0 : numerator / denominator;
 }
 
-int main() {
-	vector<vector<double>> values = {{1,2,3,4}, {5,6,7,8}};
-
-	for (auto row : values){
-		for (auto elem: row)
-			cout << elem << " ";
-
-		cout << endl;
+int main(int argc, char* argv[]) {
+	if (argc < 2) {
+		cerr << "Error: Too few arguments" << endl;
+		return 1;
 	}
 
-	cout << "Pearson: " << calcPearson(values[0], values[1]) << endl;
+	ifstream tissueFileIn;
+	tissueFileIn.open(argv[1]);
+
+	string line;
+
+	// discarding useless info
+	getline(tissueFileIn, line);
+	getline(tissueFileIn, line);
+	getline(tissueFileIn, line);
+
+	tissueFile_t tissueFile;
+
+	while (getline(tissueFileIn, line)) {
+		vector<string> lineTokens = splitTSV(line);
+
+		// save gene name
+		tissueFile.genes.push_back(lineTokens[0]);
+
+		// save gene data
+		vector<double> valuesRow;
+
+		for (unsigned int i = 1; i < lineTokens.size(); i++)
+			valuesRow.push_back(stod(lineTokens[i], nullptr));
+
+		tissueFile.values.push_back(valuesRow);
+	}
+
+	tissueFileIn.close();
+
+	cout << "Pearson: " << calcPearson(tissueFile.values[0], tissueFile.values[1]) << endl;
 
 	return 0;
 }
