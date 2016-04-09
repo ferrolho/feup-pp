@@ -29,17 +29,6 @@ void outputSamplesByTissueFile(const multimap<string, string>& tissueSamplesMap)
 		samplesByTissueFile << "Found " << setw(3) << tissueSamplesMap.count(it->first) << " samples in: " << it->first << endl;
 
 	samplesByTissueFile.close();
-
-	/*
-	* Relevant tissues output
-	*/
-	ofstream tissuesListFile;
-	tissuesListFile.open("../data/output/tissues.list");
-
-	for (auto it = tissueSamplesMap.begin(); it != tissueSamplesMap.end(); it = tissueSamplesMap.upper_bound(it->first))
-		tissuesListFile << it->first << endl;
-
-	tissuesListFile.close();
 }
 
 multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, const giantGenesFile_t& giantGenesFile, map<string, unsigned int>& sampleColumnMap) {
@@ -82,6 +71,16 @@ multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, 
 	return tissueSamplesMap;
 }
 
+void saveTissuesListToFile(const multimap<string, string>& tissueSamplesMap) {
+	ofstream tissuesListFile;
+	tissuesListFile.open("../data/output/tissues.list");
+
+	for (auto it = tissueSamplesMap.begin(); it != tissueSamplesMap.end(); it = tissueSamplesMap.upper_bound(it->first))
+		tissuesListFile << it->first << endl;
+
+	tissuesListFile.close();
+}
+
 int main(int argc, char* argv[]) {
 	if (argc < 3) {
 		cerr << "Error: Too few arguments" << endl;
@@ -115,10 +114,12 @@ int main(int argc, char* argv[]) {
 	for (unsigned int i = 0; i < giantGenesFile.genesHeader.size(); i++)
 		sampleColumnMap[giantGenesFile.genesHeader[i]] = i;
 
+
 	/*
 	* Build [tissue -> samples] multimap
 	*/
 	multimap<string, string> tissueSamplesMap = buildTissueToSamplesMap(argv[2], giantGenesFile, sampleColumnMap);
+	saveTissuesListToFile(tissueSamplesMap);
 
 
 	// maps each tissue name to its file output stream
