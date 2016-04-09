@@ -19,13 +19,27 @@ struct giantGenesFile_t {
 };
 
 void outputSamplesByTissueFile(const multimap<string, string>& tissueSamplesMap) {
+	/*
+	* Samples by tissue file
+	*/
 	ofstream samplesByTissueFile;
-	samplesByTissueFile.open("samplesByTissue.txt");
+	samplesByTissueFile.open("../data/output/samplesByTissue.txt");
 
 	for (auto it = tissueSamplesMap.begin(), end = tissueSamplesMap.end(); it != end; it = tissueSamplesMap.upper_bound(it->first))
 		samplesByTissueFile << "Found " << setw(3) << tissueSamplesMap.count(it->first) << " samples in: " << it->first << endl;
 
 	samplesByTissueFile.close();
+
+	/*
+	* Relevant tissues output
+	*/
+	ofstream tissuesListFile;
+	tissuesListFile.open("../data/output/tissues.list");
+
+	for (auto it = tissueSamplesMap.begin(); it != tissueSamplesMap.end(); it = tissueSamplesMap.upper_bound(it->first))
+		tissuesListFile << it->first << endl;
+
+	tissuesListFile.close();
 }
 
 multimap<string, string> buildTissueToSamplesMap(const string& samplesFilename, const giantGenesFile_t& giantGenesFile, map<string, unsigned int>& sampleColumnMap) {
