@@ -2,6 +2,8 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <map>
+#include <sstream>
 #include <vector>
 
 #include "utilities.h"
@@ -46,11 +48,14 @@ double calcPearson(const vector<double>& x, const vector<double>& y) {
 }
 
 int main(int argc, char* argv[]) {
-	if (argc < 2) {
+	if (argc < 3) {
 		cerr << "Error: Too few arguments" << endl;
 		return 1;
 	}
 
+	/*
+	* Read tissue file
+	*/
 	ifstream tissueFileIn;
 	tissueFileIn.open(argv[1]);
 
@@ -80,7 +85,59 @@ int main(int argc, char* argv[]) {
 
 	tissueFileIn.close();
 
-	cout << "Pearson: " << calcPearson(tissueFile.values[0], tissueFile.values[1]) << endl;
+	/*
+	* Map tissue gene name to data row
+	*/
+	map<string, int> geneToRow;
+	for (unsigned int i = 0; i < tissueFile.genes.size(); i++)
+		geneToRow[tissueFile.genes[i]] = i;
+
+	/*
+	* Read mitocondrial genes list
+	*/
+	ifstream mitocondrialGenesFileIn;
+	mitocondrialGenesFileIn.open(argv[2]);
+
+	vector<string> mitocondrialGenes;
+
+	while (getline(mitocondrialGenesFileIn, line))
+		mitocondrialGenes.push_back(line);
+
+	mitocondrialGenesFileIn.close();
+
+	/*
+	* Calculate correlations
+	*/
+	ofstream allCorrelationsOut, posCorrelationsOut, negCorrelationsOut;
+	allCorrelationsOut.open("../data/output/correlations-output/Bladder-all.txt");
+	posCorrelationsOut.open("../data/output/correlations-output/Bladder-pos.txt");
+	negCorrelationsOut.open("../data/output/correlations-output/Bladder-neg.txt");
+
+	int progress = 0;
+
+	for (const auto& mitocondrialGene : mitocondrialGenes) {
+		for (const auto& tissueGene : tissueFile.genes) {
+			double pearson = calcPearson(tissueFile.values[geneToRow[mitocondrialGene]], tissueFile.values[geneToRow[tissueGene]]);
+
+			ostringstream outputStream;
+
+			outputStream << mitocondrialGene << " " << tissueGene << " " << pearson << endl;
+
+			allCorrelationsOut << outputStream.str();
+
+			if (pearson > 0.7)
+				posCorrelationsOut << outputStream.str();
+			else if (pearson < -0.7)
+				negCorrelationsOut << outputStream.str();
+		}
+
+		printf("\rProgress: %5.1f %%", (++progress) * 100.0 / mitocondrialGenes.size());
+		fflush(stdout);
+	}
+
+	allCorrelationsOut.close();
+
+	cout << endl << "Done!" << endl;
 
 	return 0;
 }

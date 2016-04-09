@@ -4,8 +4,8 @@
 #include <fstream>
 #include <map>
 #include <memory>
-#include <vector>
 #include <sstream>
+#include <vector>
 
 #include "utilities.h"
 
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]) {
 
 		cout << "> Opening " << tissueName << ".txt ... " << flush;
 
-		string filename = "gtex/rna-seq-data/tissues-output/" + tissueName + ".txt";
+		string filename = "../data/output/tissues-output/" + tissueName + ".txt";
 		tissuesFilesMap[tissueName] = make_shared<ofstream> (filename);
 
 		// resetting stream
