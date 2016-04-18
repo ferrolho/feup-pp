@@ -1,3 +1,17 @@
+# Config
+composer.phar
+
+# Laravel
 /vendor
 /node_modules
 .env
+
+# PhpStorm
+.idea/
+
+# DB
+database.sqlite
+database.sqlite*
+
+# MacOS
+.DS_Store
