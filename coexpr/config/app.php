@@ -147,6 +147,18 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 
+		/*
+		 * CoExpr
+		 */
+
+		'Illuminate\Html\HtmlServiceProvider',
+
+		// IDE Helper - auto-complete on steroids
+		Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
+		// SleepingOwl - back office
+		'SleepingOwl\Admin\AdminServiceProvider',
+
 	],
 
 	/*
@@ -194,6 +206,22 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+
+		/*
+		 * CoExpr
+		 */
+
+		'Form'      => 'Illuminate\Html\FormFacade',
+		'Html'      => 'Illuminate\Html\HtmlFacade',
+
+		// SleepingOwl - back office
+		'Admin'                => 'SleepingOwl\Admin\Admin',
+		'AdminAuth'            => 'SleepingOwl\AdminAuth\Facades\AdminAuth',
+		'AdminRouter'          => 'SleepingOwl\Admin\Facades\AdminRouter',
+		'AssetManager'         => 'SleepingOwl\Admin\AssetManager\AssetManager',
+		'Column'               => 'SleepingOwl\Admin\Columns\Column',
+		'FormItem'             => 'SleepingOwl\Admin\Models\Form\FormItem',
+		'ModelItem'            => 'SleepingOwl\Admin\Models\ModelItem',
 
 	],
 
