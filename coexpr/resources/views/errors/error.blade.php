@@ -10,6 +10,8 @@
 
 		@yield('content')
 
+		{{--@include('_footer')--}}
+
 		@include('_scripts')
 
 	</body>
