@@ -47,6 +47,15 @@ double calcPearson(const vector<double>& x, const vector<double>& y) {
 	return denominator == 0 ? 0 : numerator / denominator;
 }
 
+/**
+*
+* Usage:
+*  ./correlations.out <tissue file> <mitocondrial genes list>
+*
+* Example:
+*  ./correlations.out ../data/output/tissues-output/Bladder.txt ../data/input/mitocondrialGenes.list
+*
+*/
 int main(int argc, char* argv[]) {
 	if (argc < 3) {
 		cerr << "Error: Too few arguments" << endl;
@@ -70,101 +79,101 @@ int main(int argc, char* argv[]) {
 
 
 	/*
-	* Reads tissues list file
+	* Read tissue file
 	*/
-	ifstream tissuesListFile;
-	tissuesListFile.open(argv[1]);
+	string tissueName = argv[1];
 
-	if (tissuesListFile.is_open()) {
-		string tissueName;
+	ifstream tissueFileIn;
+	tissueFileIn.open("../data/output/tissues-output/" + tissueName + ".txt");
 
-		cout << "Calculating correlations between genes of tissues:" << endl;
+	cout << tissueName << " ... " << "Loading" << flush;
 
-		while(getline(tissuesListFile, tissueName)) {
-			cout << tissueName << " ... " << "Loading" << flush;
+	if (tissueFileIn.is_open()) {
+		string line;
 
-			/*
-			* Read tissue file
-			*/
-			ifstream tissueFileIn;
-			tissueFileIn.open("../data/output/tissues-output/" + tissueName + ".txt");
+		// discarding useless info
+		getline(tissueFileIn, line);
+		getline(tissueFileIn, line);
+		getline(tissueFileIn, line);
 
-			if (tissueFileIn.is_open()) {
-				string line;
+		tissueFile_t tissueFile;
 
-				// discarding useless info
-				getline(tissueFileIn, line);
-				getline(tissueFileIn, line);
-				getline(tissueFileIn, line);
+		while (getline(tissueFileIn, line)) {
+			vector<string> lineTokens = splitTSV(line);
 
-				tissueFile_t tissueFile;
+			// save gene name
+			tissueFile.genes.push_back(lineTokens[0]);
 
-				while (getline(tissueFileIn, line)) {
-					vector<string> lineTokens = splitTSV(line);
+			// save gene data
+			vector<double> valuesRow;
 
-					// save gene name
-					tissueFile.genes.push_back(lineTokens[0]);
+			for (unsigned int i = 1; i < lineTokens.size(); i++)
+				valuesRow.push_back(stod(lineTokens[i], nullptr));
 
-					// save gene data
-					vector<double> valuesRow;
+			tissueFile.values.push_back(valuesRow);
+		}
 
-					for (unsigned int i = 1; i < lineTokens.size(); i++)
-						valuesRow.push_back(stod(lineTokens[i], nullptr));
 
-					tissueFile.values.push_back(valuesRow);
+		/*
+		* Map tissue gene name to data row
+		*/
+		map<string, int> geneToRow;
+		for (unsigned int i = 0; i < tissueFile.genes.size(); i++)
+			geneToRow[tissueFile.genes[i]] = i;
+
+
+		/*
+		* Calculate correlations
+		*/
+		ofstream allCorrelationsOut, posCorrelationsOut, negCorrelationsOut;
+		allCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-all.txt");
+		posCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-pos.txt");
+		negCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-neg.txt");
+
+		if (!allCorrelationsOut.is_open()) {
+			cerr << endl << "ERROR: Could not open 'all' output file for: " << tissueName << endl;
+		} else if (!posCorrelationsOut.is_open()) {
+			cerr << endl << "ERROR: Could not open 'pos' output file for: " << tissueName << endl;
+		} else if (!negCorrelationsOut.is_open()) {
+			cerr << endl << "ERROR: Could not open 'neg' output file for: " << tissueName << endl;
+		} else {
+			int progress = 0;
+
+			for (const auto& mitocondrialGene : mitocondrialGenes) {
+				for (const auto& tissueGene : tissueFile.genes) {
+					// skip self-correlation
+					if (mitocondrialGene == tissueGene)
+						continue;
+
+					double pearson = calcPearson(tissueFile.values[geneToRow[mitocondrialGene]], tissueFile.values[geneToRow[tissueGene]]);
+
+					ostringstream outputStream;
+
+					outputStream << mitocondrialGene << " " << tissueGene << " " << pearson << endl;
+
+					allCorrelationsOut << outputStream.str();
+
+					if (pearson > 0.7)
+						posCorrelationsOut << outputStream.str();
+					else if (pearson < -0.7)
+						negCorrelationsOut << outputStream.str();
 				}
 
-
-				/*
-				* Map tissue gene name to data row
-				*/
-				map<string, int> geneToRow;
-				for (unsigned int i = 0; i < tissueFile.genes.size(); i++)
-					geneToRow[tissueFile.genes[i]] = i;
-
-
-				/*
-				* Calculate correlations
-				*/
-				ofstream allCorrelationsOut, posCorrelationsOut, negCorrelationsOut;
-				allCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-all.txt");
-				posCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-pos.txt");
-				negCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-neg.txt");
-
-				int progress = 0;
-
-				for (const auto& mitocondrialGene : mitocondrialGenes) {
-					for (const auto& tissueGene : tissueFile.genes) {
-						double pearson = calcPearson(tissueFile.values[geneToRow[mitocondrialGene]], tissueFile.values[geneToRow[tissueGene]]);
-
-						ostringstream outputStream;
-
-						outputStream << mitocondrialGene << " " << tissueGene << " " << pearson << endl;
-
-						allCorrelationsOut << outputStream.str();
-
-						if (pearson > 0.7)
-							posCorrelationsOut << outputStream.str();
-						else if (pearson < -0.7)
-							negCorrelationsOut << outputStream.str();
-					}
-
-					printf("\r%s ... %5.1f %%", tissueName.c_str(), (++progress) * 100.0 / mitocondrialGenes.size());
-					fflush(stdout);
-				}
-
-				allCorrelationsOut.close();
-				posCorrelationsOut.close();
-				negCorrelationsOut.close();
+				printf("\r%s ... %5.1f %%", tissueName.c_str(), (++progress) * 100.0 / mitocondrialGenes.size());
+				fflush(stdout);
 			}
 
-			tissueFileIn.close();
-
 			cout << "\r" << tissueName << " ... OK!    " << endl;
-		}
-	}
 
-	tissuesListFile.close();
+			allCorrelationsOut.close();
+			posCorrelationsOut.close();
+			negCorrelationsOut.close();
+		}
+		
+		tissueFileIn.close();
+	} else {
+		cerr << endl << "ERROR: Could not open file of tissue: " << tissueName << endl;
+	}
 
 	cout << "- All done! -" << endl;
 
