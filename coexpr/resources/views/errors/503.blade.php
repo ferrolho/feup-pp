@@ -12,7 +12,7 @@
 
 						<hr class="intro-divider">
 
-							<h3>Service temporarily unavailable</h3>
+						<h3>Service temporarily unavailable</h3>
 
 					</div>
 				</div>
