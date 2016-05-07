@@ -12,9 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('home');
+	return view('home');
 });
 
+Route::get('correlations', 'HomeController@index');
+
 Route::get('template', function () {
-    return view('landing-template');
+	return view('landing-template');
 });

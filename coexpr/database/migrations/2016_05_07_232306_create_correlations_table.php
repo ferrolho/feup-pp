@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration {
+class CreateCorrelationsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -11,13 +11,12 @@ class CreateUsersTable extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('users', function (Blueprint $table) {
+		Schema::create('correlations', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('name');
-			$table->string('email')->unique();
-			$table->string('password');
-			$table->rememberToken();
-			$table->timestamps();
+
+			$table->string('gene1');
+			$table->string('gene2');
+			$table->float('correlation');
 		});
 	}
 
@@ -27,7 +26,7 @@ class CreateUsersTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop('users');
+		Schema::drop('correlations');
 	}
 
 }
