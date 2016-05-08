@@ -60,11 +60,11 @@
 
 						<br>
 
-						<a href="http://ferrolho.github.io">Henrique Ferrolho</a> / <a href="http://github.com/ferrolho">@ferrolho</a>
+						<a href="http://ferrolho.me">Henrique Ferrolho</a> / <a href="http://github.com/ferrolho">@ferrolho</a>
 
 						<br>
 
-						<a href="http://jfpereira.github.io">João Pereira</a> / <a href="http://github.com/jfpereira">@jfpereira</a>
+						<a href="http://joaofpereira.github.io">João Pereira</a> / <a href="http://github.com/joaofpereira">@joaofpereira</a>
 					</small>
 				</p>
 			</section>
@@ -355,7 +355,6 @@
 					</div>
 				</section>
 
-
 				<section data-markdown="slides/constexpr-1.md"></section>
 
 				<aside class="notes">
@@ -366,13 +365,83 @@
 			<section id="final_delete_override">
 				<h2>final - delete - override</h2>
 
-				<p data-markdown>
-					```c++
-					```
-				</p>
+				<section id="final">
+					<h3 class="fragment">final</h3>
 
-				<aside class="notes">
-				</aside>
+					<h5 class="fragment">used to virtual functions and classes.</h5>
+
+					<p class="fragment" data-markdown>
+					class
+					```cpp
+						class Dog final { // No class can be derived from Dog
+							/* ... */
+						};
+					```
+					</p>
+
+					<p class="fragment" data-markdown>
+					virtual function
+					```cpp
+						class Dog {
+							virtual void bark() final; // No class can override bark()
+						};
+					```
+					</p>
+					<aside class="notes">
+					Anyone class can derived from Dog because it's a final class. Or, no class derived from Dog can override the function assigned with final.
+					</aside>
+				</section>
+
+				<section id="delete">
+					<h3 class="fragment">delete</h3>
+
+					<p class="fragment" data-markdown>
+					C++03
+					```cpp
+						class Person {
+							public:
+								Person(int age);
+						};
+
+						Person joao(2);
+						Person henrique(4.0); // 4.0 is converted from double to int
+						joao = henrique; // the compiler generate assignment operator
+					```
+					</p>
+
+					<aside class="notes">
+					Sometimes applications are built to the user uses its interface in the correct way so we need to restrict other valid possibilities.
+					</aside>
+				</section>
+
+				<section data-markdown="slides/delete-1.md"></section>
+
+				<section id="override">
+					<h3 class="fragment">override</h3>
+
+					<p class="fragment" data-markdown>
+					C++03
+					```cpp
+						class Old {
+							virtual void A(int i);
+							virtual void B() const;
+						};
+
+						class New : public Old{
+							virtual void A(float i); // Created a new function
+							virtual void B(); // Created a new function
+						};
+					```
+					</p>
+
+					<p class="fragment">mistakes happen</p>
+
+					<aside class="notes">
+					In C++03 a single mistake in the type of a parameter or forget a const word can change everything and we cannot see that or even fix it at time.
+					</aside>
+				</section>
+
+				<section data-markdown="slides/override.md"></section>
 			</section>
 
 			<section id="lambda-functions">
