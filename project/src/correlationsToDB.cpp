@@ -12,6 +12,8 @@
 
 using namespace std;
 
+const unsigned int BUFFER_SIZE = 256;
+
 struct tissueFile_t {
 	vector<string> genes;
 	vector<vector<double>> values;
@@ -49,20 +51,22 @@ double calcPearson(const vector<double>& x, const vector<double>& y) {
 	return denominator == 0 ? 0 : numerator / denominator;
 }
 
-string quoteSQL(const string& s) {
-	return string("'") + s + string("'");
-}
+void resetTableDB(const string& tableName, sqlite3* db) {
+	string statement;
 
-void runSQL(const string& statement, sqlite3* db) {
-	sqlite3_stmt* stmt;
+	// drop table
+	statement = "DROP TABLE IF EXISTS " + tableName;
 
-	//preparing the statement
-	sqlite3_prepare(db, statement.c_str(), -1, &stmt, NULL);
+	sqlite3_exec(db, statement.c_str(), nullptr, nullptr, nullptr);
 
-	//executing the statement
-	sqlite3_step(stmt);
+	// create table
+	statement = "CREATE TABLE \"" + tableName + "\" ("
+	"\"id\" integer not null primary key autoincrement,"
+	"\"gene1\" varchar not null,"
+	"\"gene2\" varchar not null,"
+	"\"correlation\" float not null)";
 
-	sqlite3_finalize(stmt);
+	sqlite3_exec(db, statement.c_str(), nullptr, nullptr, nullptr);
 }
 
 /**
@@ -144,14 +148,24 @@ int main(int argc, char* argv[]) {
 
 
 		/*
-		* Calculate correlations
+		* Open DB
 		*/
 		sqlite3* db;
 
 		if (sqlite3_open("../../coexpr/database/database.sqlite", &db) == SQLITE_OK) {
+			resetTableDB("correlations", db);
+
+			sqlite3_stmt* stmt;
+			sqlite3_prepare_v2(db, "INSERT INTO correlations VALUES (NULL, @gene1, @gene2, @correlation)", BUFFER_SIZE, &stmt, nullptr);
+
 			int progress = 0;
 
+			/*
+			* Calculate correlations
+			*/
 			for (const auto& mitocondrialGene : mitocondrialGenes) {
+				sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
+
 				for (const auto& tissueGene : tissueFile.genes) {
 					// skip self-correlation
 					if (mitocondrialGene == tissueGene)
@@ -159,23 +173,28 @@ int main(int argc, char* argv[]) {
 
 					double pearson = calcPearson(tissueFile.values[geneToRow[mitocondrialGene]], tissueFile.values[geneToRow[tissueGene]]);
 
-					stringstream ss;
-					ss << "INSERT INTO correlations (gene1, gene2, correlation) VALUES ("
-					<< quoteSQL(mitocondrialGene) << ", "
-					<< quoteSQL(tissueGene) << ", "
-					<< pearson << ");";
+					ostringstream ss;
+					ss << pearson;
 
-					runSQL(ss.str(), db);
+					sqlite3_bind_text(stmt, 1, mitocondrialGene.c_str(), -1, SQLITE_TRANSIENT);
+					sqlite3_bind_text(stmt, 2, tissueGene.c_str(), -1, SQLITE_TRANSIENT);
+					sqlite3_bind_text(stmt, 3, ss.str().c_str(), -1, SQLITE_TRANSIENT);
+
+					sqlite3_step(stmt);
+
+					sqlite3_clear_bindings(stmt);
+					sqlite3_reset(stmt);
 				}
+
+				sqlite3_exec(db, "END TRANSACTION", nullptr, nullptr, nullptr);
 
 				printf("\r%s ... %5.1f %%", tissueName.c_str(), (++progress) * 100.0 / mitocondrialGenes.size());
 				fflush(stdout);
-
-				break;
 			}
 
 			cout << "\r" << tissueName << " ... OK!    " << endl;
 
+			sqlite3_finalize(stmt);
 			sqlite3_close(db);
 		} else {
 			cerr << endl << "ERROR: Failed to open DB." << endl;
