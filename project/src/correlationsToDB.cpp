@@ -52,10 +52,10 @@ double calcPearson(const vector<double>& x, const vector<double>& y) {
 }
 
 void resetTableDB(const string& tableName, sqlite3* db) {
-	string statement;
+	cout << "Resetting DB table ... " << flush;
 
 	// drop table
-	statement = "DROP TABLE IF EXISTS " + tableName;
+	string statement = "DROP TABLE IF EXISTS " + tableName;
 
 	sqlite3_exec(db, statement.c_str(), nullptr, nullptr, nullptr);
 
@@ -67,6 +67,8 @@ void resetTableDB(const string& tableName, sqlite3* db) {
 	"\"correlation\" float not null)";
 
 	sqlite3_exec(db, statement.c_str(), nullptr, nullptr, nullptr);
+
+	cout << "OK!" << endl;
 }
 
 /**
@@ -111,7 +113,7 @@ int main(int argc, char* argv[]) {
 	ifstream tissueFileIn;
 	tissueFileIn.open("../data/output/tissues-output/" + tissueName + ".txt");
 
-	cout << tissueName << " ... " << "Loading" << flush;
+	cout << "Reading " << tissueName << " file ... " << flush;
 
 	if (tissueFileIn.is_open()) {
 		string line;
@@ -138,6 +140,8 @@ int main(int argc, char* argv[]) {
 			tissueFile.values.push_back(valuesRow);
 		}
 
+		cout << "OK!" << endl;
+
 
 		/*
 		* Map tissue gene name to data row
@@ -152,7 +156,10 @@ int main(int argc, char* argv[]) {
 		*/
 		sqlite3* db;
 
+		cout << "Opening DB ... ";
 		if (sqlite3_open("../../coexpr/database/database.sqlite", &db) == SQLITE_OK) {
+			cout << "OK!" << endl;
+
 			resetTableDB("correlations", db);
 
 			sqlite3_exec(db, "PRAGMA synchronous = OFF", nullptr, nullptr, nullptr);
@@ -163,6 +170,8 @@ int main(int argc, char* argv[]) {
 
 			int progress = 0;
 			sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
+
+			cout << tissueName << " ... " << "Loading" << flush;
 
 			/*
 			* Calculate correlations
@@ -193,6 +202,8 @@ int main(int argc, char* argv[]) {
 			}
 
 			sqlite3_exec(db, "END TRANSACTION", nullptr, nullptr, nullptr);
+
+			sqlite3_exec(db, "CREATE INDEX 'correlations_index' ON 'correlations' ('correlation')", nullptr, nullptr, nullptr);
 
 			cout << "\r" << tissueName << " ... OK!    " << endl;
 
