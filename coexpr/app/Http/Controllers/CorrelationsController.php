@@ -28,10 +28,14 @@ class CorrelationsController extends Controller {
 	}
 
 	public function bladder() {
+		/*
 		$correlations = Correlation::where('correlation', '>', 0.9)
 			->where('correlation', '<', 1)
 			->orderBy('correlation', 'desc')
 			->paginate(100);
+		*/
+
+		$correlations = Correlation::paginate(100);
 
 		return view('correlations')->with('correlations', $correlations);
 	}

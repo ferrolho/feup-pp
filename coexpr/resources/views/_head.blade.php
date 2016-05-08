@@ -14,16 +14,19 @@
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
 
-	<!-- Fonts -->
-	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
-		  rel="stylesheet" type="text/css">
-	<link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<!-- DataTables -->
+	<link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
-	<!-- Custom CSS -->
+	<!-- Template CSS -->
 	<link href="/css/landing-page.css" rel="stylesheet" type="text/css">
 
 	<!-- CoExpr -->
 	<link href="/css/coexpr/coexpr.css" rel="stylesheet">
+
+	<!-- Fonts -->
+	<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
+		  rel="stylesheet" type="text/css">
+	<link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
