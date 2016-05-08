@@ -5,7 +5,7 @@
 	<div class="container" style="padding-top: 50px;">
 		<div class="row">
 
-			<div class="col-xs-offset-3 col-xs-6">
+			<div class="col-xs-offset-3 col-xs-6" style="padding: 50px 0;">
 				<table class="table table-bordered">
 
 					<thead>

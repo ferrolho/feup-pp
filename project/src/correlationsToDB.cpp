@@ -6,6 +6,8 @@
 #include <sstream>
 #include <vector>
 
+#include <sqlite3.h>
+
 #include "utilities.h"
 
 using namespace std;
@@ -47,16 +49,32 @@ double calcPearson(const vector<double>& x, const vector<double>& y) {
 	return denominator == 0 ? 0 : numerator / denominator;
 }
 
+string quoteSQL(const string& s) {
+	return string("'") + s + string("'");
+}
+
+void runSQL(const string& statement, sqlite3* db) {
+	sqlite3_stmt* stmt;
+
+	//preparing the statement
+	sqlite3_prepare(db, statement.c_str(), -1, &stmt, NULL);
+
+	//executing the statement
+	sqlite3_step(stmt);
+
+	sqlite3_finalize(stmt);
+}
+
 /**
 *
 * Compile:
-*  g++ correlations.cpp -o correlations.out -Wall -std=c++11
+*  g++ correlationsToDB.cpp -o correlationsToDB.out -Wall -lsqlite3 -std=c++11
 *
 * Usage:
-*  ./correlations.out <tissue name> <mitocondrial genes list>
+*  ./correlationsToDB.out <tissue name> <mitocondrial genes list>
 *
 * Example:
-*  ./correlations.out Bladder ../data/input/mitocondrialGenes.list
+*  ./correlationsToDB.out Bladder ../data/input/mitocondrialGenes.list
 *
 */
 int main(int argc, char* argv[]) {
@@ -128,18 +146,9 @@ int main(int argc, char* argv[]) {
 		/*
 		* Calculate correlations
 		*/
-		ofstream allCorrelationsOut, posCorrelationsOut, negCorrelationsOut;
-		allCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-all.txt");
-		posCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-pos.txt");
-		negCorrelationsOut.open("../data/output/correlations-output/" + tissueName + "-neg.txt");
+		sqlite3* db;
 
-		if (!allCorrelationsOut.is_open()) {
-			cerr << endl << "ERROR: Could not open 'all' output file for: " << tissueName << endl;
-		} else if (!posCorrelationsOut.is_open()) {
-			cerr << endl << "ERROR: Could not open 'pos' output file for: " << tissueName << endl;
-		} else if (!negCorrelationsOut.is_open()) {
-			cerr << endl << "ERROR: Could not open 'neg' output file for: " << tissueName << endl;
-		} else {
+		if (sqlite3_open("../../coexpr/database/database.sqlite", &db) == SQLITE_OK) {
 			int progress = 0;
 
 			for (const auto& mitocondrialGene : mitocondrialGenes) {
@@ -150,27 +159,26 @@ int main(int argc, char* argv[]) {
 
 					double pearson = calcPearson(tissueFile.values[geneToRow[mitocondrialGene]], tissueFile.values[geneToRow[tissueGene]]);
 
-					ostringstream outputStream;
+					stringstream ss;
+					ss << "INSERT INTO correlations (gene1, gene2, correlation) VALUES ("
+					<< quoteSQL(mitocondrialGene) << ", "
+					<< quoteSQL(tissueGene) << ", "
+					<< pearson << ");";
 
-					outputStream << mitocondrialGene << " " << tissueGene << " " << pearson << endl;
-
-					allCorrelationsOut << outputStream.str();
-
-					if (pearson > 0.7)
-						posCorrelationsOut << outputStream.str();
-					else if (pearson < -0.7)
-						negCorrelationsOut << outputStream.str();
+					runSQL(ss.str(), db);
 				}
 
 				printf("\r%s ... %5.1f %%", tissueName.c_str(), (++progress) * 100.0 / mitocondrialGenes.size());
 				fflush(stdout);
+
+				break;
 			}
 
 			cout << "\r" << tissueName << " ... OK!    " << endl;
 
-			allCorrelationsOut.close();
-			posCorrelationsOut.close();
-			negCorrelationsOut.close();
+			sqlite3_close(db);
+		} else {
+			cerr << endl << "ERROR: Failed to open DB." << endl;
 		}
 		
 		tissueFileIn.close();

@@ -24,7 +24,7 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$correlations = Correlation::all();
+		$correlations = Correlation::where('correlation', '>', '0.8')->get();
 
 		return view('correlations')->with('correlations', $correlations);
 	}
