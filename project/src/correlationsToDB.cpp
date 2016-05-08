@@ -203,9 +203,13 @@ int main(int argc, char* argv[]) {
 
 			sqlite3_exec(db, "END TRANSACTION", nullptr, nullptr, nullptr);
 
+			cout << "\r" << tissueName << " ... OK!    " << endl;
+
+			cout << "Creating DB index (hang on just a bit more!) ... " << flush;
+
 			sqlite3_exec(db, "CREATE INDEX 'correlations_index' ON 'correlations' ('correlation')", nullptr, nullptr, nullptr);
 
-			cout << "\r" << tissueName << " ... OK!    " << endl;
+			cout << "OK!" << endl;
 
 			sqlite3_finalize(stmt);
 			sqlite3_close(db);
