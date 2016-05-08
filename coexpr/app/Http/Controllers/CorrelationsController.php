@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class HomeController extends Controller {
+class CorrelationsController extends Controller {
 
 	/**
 	 * Create a new controller instance.
@@ -24,7 +24,14 @@ class HomeController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$correlations = Correlation::where('correlation', '>', '0.8')->get();
+		return "<a href=\"/correlations/bladder\">Bladder</a>";
+	}
+
+	public function bladder() {
+		$correlations = Correlation::where('correlation', '>', 0.9)
+			->where('correlation', '<', 1)
+			->orderBy('correlation', 'desc')
+			->paginate(100);
 
 		return view('correlations')->with('correlations', $correlations);
 	}
