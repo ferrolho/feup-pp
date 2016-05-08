@@ -31,8 +31,7 @@ class CorrelationsController extends Controller {
 		$correlations = Correlation::where('correlation', '>', 0.9)
 			->where('correlation', '<', 1)
 			->orderBy('correlation', 'desc')
-			->take(100)
-			->get();
+			->paginate(100);
 
 		return view('correlations')->with('correlations', $correlations);
 	}

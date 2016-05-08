@@ -5,7 +5,7 @@
 	<div class="container" style="padding-top: 50px;">
 		<div class="row">
 
-			<div class="col-xs-offset-3 col-xs-6" style="padding: 50px 0;">
+			<div class="col-xs-offset-3 col-xs-6" style="padding-top: 50px;">
 				<table class="table table-bordered table-hover table-striped">
 
 					<thead>
@@ -33,6 +33,10 @@
 					</tbody>
 
 				</table>
+			</div>
+
+			<div class="text-center">
+				{!! $correlations->links() !!}
 			</div>
 
 		</div>
