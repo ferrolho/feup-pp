@@ -155,17 +155,19 @@ int main(int argc, char* argv[]) {
 		if (sqlite3_open("../../coexpr/database/database.sqlite", &db) == SQLITE_OK) {
 			resetTableDB("correlations", db);
 
+			sqlite3_exec(db, "PRAGMA synchronous = OFF", nullptr, nullptr, nullptr);
+			sqlite3_exec(db, "PRAGMA journal_mode = MEMORY", nullptr, nullptr, nullptr);
+
 			sqlite3_stmt* stmt;
 			sqlite3_prepare_v2(db, "INSERT INTO correlations VALUES (NULL, @gene1, @gene2, @correlation)", BUFFER_SIZE, &stmt, nullptr);
 
 			int progress = 0;
+			sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
 
 			/*
 			* Calculate correlations
 			*/
 			for (const auto& mitocondrialGene : mitocondrialGenes) {
-				sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
-
 				for (const auto& tissueGene : tissueFile.genes) {
 					// skip self-correlation
 					if (mitocondrialGene == tissueGene)
@@ -186,11 +188,11 @@ int main(int argc, char* argv[]) {
 					sqlite3_reset(stmt);
 				}
 
-				sqlite3_exec(db, "END TRANSACTION", nullptr, nullptr, nullptr);
-
 				printf("\r%s ... %5.1f %%", tissueName.c_str(), (++progress) * 100.0 / mitocondrialGenes.size());
 				fflush(stdout);
 			}
+
+			sqlite3_exec(db, "END TRANSACTION", nullptr, nullptr, nullptr);
 
 			cout << "\r" << tissueName << " ... OK!    " << endl;
 
