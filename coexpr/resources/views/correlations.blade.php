@@ -6,7 +6,7 @@
 		<div class="row">
 
 			<div class="col-xs-offset-3 col-xs-6" style="padding: 50px 0;">
-				<table class="table table-bordered">
+				<table class="table table-bordered table-hover table-striped">
 
 					<thead>
 						<tr>

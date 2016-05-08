@@ -2,6 +2,17 @@
 * Global
 */
 
+html {
+	height: initial;
+	min-height: 100%;
+
+	position: relative;
+}
+
+body {
+	margin-bottom: 150px;
+}
+
 .vertical-center {
 	min-height: 100%; /* Fallback for vh unit */
 	min-height: 100vh;
@@ -57,4 +68,14 @@
 .intro-message {
 	position: initial;
 	padding: initial;
+}
+
+/*
+* Footer
+*/
+.footer {
+	bottom: 0;
+	position: absolute;
+	height: 150px;
+	width: 100%;
 }
