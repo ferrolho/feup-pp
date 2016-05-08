@@ -328,14 +328,38 @@
 			</section>
 
 			<section id="constexpr">
-				<h2>constexpr</h2>
+				<section>
+					<h2>constexpr</h2>
 
-				<p data-markdown>
-					```c++
-					```
-				</p>
+					<p class="fragment">Used in places that require compile-time evaluation</p>
+
+					<div>
+						<h5 class="fragment">template parameters</h5>
+						<h5 class="fragment">array-size specifiers</h5>
+					</div>
+
+					<div class="fragment">
+						<h3>example</h3>
+
+						<p data-markdown>
+						```cpp
+						template<int N>
+						class fixed_size_list
+						{ /*...*/ };
+
+						fixed_size_list<X> mylist;  // X must be an integer constant expression
+
+						int numbers[X];  // X must be an integer constant expression
+						```
+						</p>
+					</div>
+				</section>
+
+
+				<section data-markdown="slides/constexpr-1.md"></section>
 
 				<aside class="notes">
+					constexpr declares both objects as well as functions as fit for use in constant expressions.
 				</aside>
 			</section>
 
