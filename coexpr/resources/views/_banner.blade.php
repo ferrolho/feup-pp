@@ -14,7 +14,7 @@
 
 					<ul class="list-inline intro-social-buttons">
 						<li>
-							<a href="home" class="btn btn-default btn-lg">
+							<a href="correlations" class="btn btn-default btn-lg">
 								<i class="fa fa-play fa-fw"></i> Start
 							</a>
 						</li>

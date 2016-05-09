@@ -6,6 +6,10 @@
 		<div class="row">
 
 			<div class="col-xs-12 col-md-offset-3 col-md-6" style="padding-top: 50px;">
+
+				{{--<p>Showing {{ $correlations->perPage() }} of {{ $correlations->total() }} results.</p>--}}
+				<p class="text-center">{{ $correlations->total() }} results</p>
+
 				<div class="table-responsive">
 					<table class="table table-bordered table-hover table-striped">
 
