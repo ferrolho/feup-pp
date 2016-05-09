@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Correlation;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use Request;
+use Response;
 
 class CorrelationsController extends Controller {
 
@@ -19,9 +18,10 @@ class CorrelationsController extends Controller {
 			->orderBy('correlation', 'desc')
 			->paginate(25);
 
-		//$correlations = Correlation::paginate(100);
+		if (Request::ajax())
+			return Response::json(view('correlations._correlations')->with('correlations', $correlations)->render());
 
-		return view('correlations')->with('correlations', $correlations);
+		return view('correlations.correlations')->with('correlations', $correlations);
 	}
 
 }

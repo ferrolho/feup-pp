@@ -14,6 +14,8 @@
 
 		@include('_scripts')
 
+		@stack('scripts')
+
 	</body>
 
 </html>
