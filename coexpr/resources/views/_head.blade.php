@@ -14,9 +14,6 @@
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
 
-	<!-- DataTables -->
-	<link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-
 	<!-- Template CSS -->
 	<link href="/css/landing-page.css" rel="stylesheet" type="text/css">
 
