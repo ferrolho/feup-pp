@@ -8,7 +8,7 @@ class Person {
 }
 ```
 
-<p class="fragment">It'll be great if we can use something like this in C++, right ?</p>
+<p class="fragment">It'd be great if we could use something like this in C++, right?</p>
 
 <aside class="notes">
 Very common constructors share the same code, but this is not possible in CPP unless we create two different objects first.
