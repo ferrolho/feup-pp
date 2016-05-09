@@ -8,8 +8,7 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "laravelrus/sleepingowl": "4.*@dev",
-        "barryvdh/laravel-ide-helper": "^2.1",
-        "yajra/laravel-datatables-oracle": "^6.11"
+        "barryvdh/laravel-ide-helper": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
