@@ -58,6 +58,7 @@ body {
 
 #loader {
 	display: none;
+	margin-top: 10px;
 
 	left: 50%;
 	position: absolute;
@@ -65,8 +66,16 @@ body {
 }
 
 #loader > div {
+	background-color: #149bdf;
+	padding: 50px 80px;
+
 	position: relative;
 	left: -50%;
+}
+
+#loader h4 {
+	color: white;
+	margin-bottom: 0;
 }
 
 #range-slider {

@@ -22,6 +22,7 @@
 
 	<!-- CoExpr -->
 	<link href="/css/coexpr/coexpr.css" rel="stylesheet">
+	<link href="/css/coexpr/loading.css" rel="stylesheet">
 
 	<!-- Fonts -->
 	<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
