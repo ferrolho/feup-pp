@@ -4,10 +4,15 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
+	<title>{{ Config::get('app.name') }}</title>
+
 	<meta name="author" content="Henrique Ferrolho">
 	<meta name="description" content="">
 
-	<title>{{ Config::get('app.name') }}</title>
+	<meta property="og:title" content="{{ Config::get('app.name') }}">
+	<meta property="og:description" content="">
+	<meta property="og:url" content="">
+	<meta property="og:image" content="">
 
 	<link href="/css/app.css" rel="stylesheet">
 

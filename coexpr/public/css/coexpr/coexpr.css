@@ -5,12 +5,17 @@
 html {
 	height: initial;
 	min-height: 100%;
-
+	overflow-x: hidden;
 	position: relative;
 }
 
 body {
 	margin-bottom: 150px;
+}
+
+#content {
+	margin-top: 50px;
+	padding-top: 20px;
 }
 
 .vertical-center {
@@ -56,9 +61,14 @@ body {
 	justify-content: center;
 }
 
+.clippy {
+	margin-top: -2px;
+	width: 15px;
+}
+
 #loader {
 	display: none;
-	margin-top: 10px;
+	margin-top: 20px;
 
 	left: 50%;
 	position: absolute;
@@ -78,10 +88,6 @@ body {
 	margin-bottom: 0;
 }
 
-#range-slider {
-	width: 100%;
-}
-
 /*
 * Intro
 */
@@ -94,6 +100,28 @@ body {
 .intro-message {
 	position: initial;
 	padding: initial;
+}
+
+/*
+* Correlations
+*/
+
+#range-slider {
+	width: 100%;
+}
+
+#share-clipboard {
+	margin-bottom: 20px;
+}
+
+.pagination {
+	margin-top: 0;
+}
+
+@media (max-width: 768px) {
+	.pagination li {
+		display: inline-block;
+	}
 }
 
 /*

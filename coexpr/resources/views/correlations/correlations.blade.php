@@ -2,54 +2,62 @@
 
 @section('content')
 
-	<div class="container" style="margin-top: 50px; padding-top: 50px;">
+	<div id="content" class="container">
 		<div class="row">
 
-			<div class="col-xs-12 col-md-offset-3 col-md-6">
-				<form>
-
-					<div class="col-xs-12 text-center">
-						<input id="range-slider" type="text" data-slider-value="[{{ $from }}, {{ $to }}]">
+			<div id="loader">
+				<div class="panel panel-default">
+					<div class="sk-circle">
+						<div class="sk-circle1 sk-child"></div>
+						<div class="sk-circle2 sk-child"></div>
+						<div class="sk-circle3 sk-child"></div>
+						<div class="sk-circle4 sk-child"></div>
+						<div class="sk-circle5 sk-child"></div>
+						<div class="sk-circle6 sk-child"></div>
+						<div class="sk-circle7 sk-child"></div>
+						<div class="sk-circle8 sk-child"></div>
+						<div class="sk-circle9 sk-child"></div>
+						<div class="sk-circle10 sk-child"></div>
+						<div class="sk-circle11 sk-child"></div>
+						<div class="sk-circle12 sk-child"></div>
 					</div>
 
-					<div class="form-group">
-						<p class="radio-inline"><strong>Order by:</strong></p>
-
-						<label class="radio-inline">
-							<input type="radio" name="orderOptions" id="radioAsc"
-								   value="asc" {{ $orderBy === 'asc' ? 'checked' : '' }}>
-							Ascending
-						</label>
-
-						<label class="radio-inline">
-							<input type="radio" name="orderOptions" id="radioDesc"
-								   value="desc" {{ $orderBy === 'desc' ? 'checked' : '' }}>
-							Descending
-						</label>
-					</div>
-
-				</form>
+					<h4>Loading...</h4>
+				</div>
 			</div>
 
-			<div class="col-xs-12 text-center">
-				<div id="loader">
-					<div class="panel panel-default">
-						<div class="sk-circle">
-							<div class="sk-circle1 sk-child"></div>
-							<div class="sk-circle2 sk-child"></div>
-							<div class="sk-circle3 sk-child"></div>
-							<div class="sk-circle4 sk-child"></div>
-							<div class="sk-circle5 sk-child"></div>
-							<div class="sk-circle6 sk-child"></div>
-							<div class="sk-circle7 sk-child"></div>
-							<div class="sk-circle8 sk-child"></div>
-							<div class="sk-circle9 sk-child"></div>
-							<div class="sk-circle10 sk-child"></div>
-							<div class="sk-circle11 sk-child"></div>
-							<div class="sk-circle12 sk-child"></div>
-						</div>
+			<div class="col-xs-12 col-md-offset-2 col-md-8">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Search filters</h3>
+					</div>
 
-						<h4>Loading...</h4>
+					<div class="panel-body">
+						<form>
+							<div class="form-group">
+								<label for="range-slider">Correlations range</label>
+
+								<div class="col-xs-12">
+									<input id="range-slider" type="text" data-slider-value="[{{ $from }}, {{ $to }}]">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<p><strong>Order by</strong></p>
+
+								<label class="radio-inline">
+									<input type="radio" name="orderOptions" id="radioAsc"
+										   value="asc" {{ $orderBy === 'asc' ? 'checked' : '' }}>
+									Ascending
+								</label>
+
+								<label class="radio-inline">
+									<input type="radio" name="orderOptions" id="radioDesc"
+										   value="desc" {{ $orderBy === 'desc' ? 'checked' : '' }}>
+									Descending
+								</label>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -66,6 +74,8 @@
 @push('scripts')
 <script>
 
+	var APP_URL = {!! json_encode(url('/')) !!};
+
 	var rangeSlider = $('#range-slider').slider({
 		id: "range-slider",
 		min: -1,
@@ -76,17 +86,20 @@
 		ticks_labels: ['-1', '0', '1']
 	});
 
+	new Clipboard('#share-url-btn');
+	$('#share-url').val(getShareUrl());
+
 	$(document).ready(function () {
 
 		$('#range-slider').on('slideStop', function (e) {
-			showLoading();
+			startLoading();
 
 			$.ajax({
 				url: getAjaxUrl(),
 				dataType: 'json'
 			}).done(function (data) {
 				$('.ajax-data').html(data);
-				hideLoading();
+				doneLoading();
 			}).fail(function () {
 				alert('Failed to load page.');
 			});
@@ -95,14 +108,14 @@
 		});
 
 		$('input:radio[name=orderOptions]').on('change', function (e) {
-			showLoading();
+			startLoading();
 
 			$.ajax({
 				url: getAjaxUrl(),
 				dataType: 'json'
 			}).done(function (data) {
 				$('.ajax-data').html(data);
-				hideLoading();
+				doneLoading();
 			}).fail(function () {
 				alert('Failed to load page.');
 			});
@@ -111,7 +124,7 @@
 		});
 
 		$(document).on('click', '.pagination a', function (e) {
-			showLoading();
+			startLoading();
 
 			var page = $(this).attr('href').split('page=')[1];
 
@@ -120,7 +133,7 @@
 				dataType: 'json'
 			}).done(function (data) {
 				$('.ajax-data').html(data);
-				hideLoading();
+				doneLoading();
 			}).fail(function () {
 				alert('Failed to load page.');
 			});
@@ -130,12 +143,21 @@
 
 	});
 
-	function showLoading() {
+	function startLoading() {
 		$('#loader').show();
 	}
 
-	function hideLoading() {
+	function doneLoading() {
 		$('#loader').hide();
+		$('#share-url').val(getShareUrl());
+	}
+
+	function getShareUrl() {
+		var page = $('.pagination li.active').text();
+
+		var url = APP_URL + getAjaxUrl() + '?page=' + page;
+
+		return url;
 	}
 
 	function getAjaxUrl() {

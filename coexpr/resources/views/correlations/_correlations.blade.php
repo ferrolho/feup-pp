@@ -1,11 +1,27 @@
-<div class="col-xs-12">
+<div class="col-xs-12 text-center">
+	<div class="row">
 
-	<p class="text-center">{{ $correlations->total() }} results</p>
+		<div id="share-clipboard" class="col-xs-12 col-md-offset-4 col-md-4">
+			<label for="share-url">Share this results page:</label>
 
-	<div class="text-center">
-		{!! $correlations->links() !!}
+			<div class="input-group">
+				<input id="share-url" type="text" class="form-control" readonly>
+
+			<span class="input-group-btn">
+				<button id="share-url-btn" class="btn btn-default" type="button" data-clipboard-target="#share-url">
+					<img class="clippy" src="/assets/clippy.svg" alt="Copy to clipboard">
+				</button>
+			</span>
+			</div>
+		</div>
+
+		<div class="col-xs-12">
+			<p class="text-info">{{ number_format($correlations->total()) }} results</p>
+
+			{!! $correlations->links() !!}
+		</div>
+
 	</div>
-
 </div>
 
 <div class="col-xs-12 col-md-offset-3 col-md-6">
