@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('correlations', 'CorrelationsController@index');
-Route::get('correlations/bladder', 'CorrelationsController@bladder');
+Route::get('correlations/bladder/{orderBy?}/{from?}/{to?}', 'CorrelationsController@bladder');
 
 Route::get('template', function () {
 	return view('landing-template');

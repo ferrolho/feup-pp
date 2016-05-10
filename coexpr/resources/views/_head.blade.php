@@ -12,7 +12,10 @@
 	<link href="/css/app.css" rel="stylesheet">
 
 	<!-- Bootstrap Core CSS -->
-	<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- bootstrap-slider -->
+	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" rel="stylesheet">
 
 	<!-- Template CSS -->
 	<link href="/css/landing-page.css" rel="stylesheet" type="text/css">

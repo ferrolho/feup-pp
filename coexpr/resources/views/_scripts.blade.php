@@ -3,3 +3,6 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<!-- bootstrap-slider -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>

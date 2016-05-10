@@ -56,6 +56,23 @@ body {
 	justify-content: center;
 }
 
+#loader {
+	display: none;
+
+	left: 50%;
+	position: absolute;
+	z-index: 100;
+}
+
+#loader > div {
+	position: relative;
+	left: -50%;
+}
+
+#range-slider {
+	width: 100%;
+}
+
 /*
 * Intro
 */
