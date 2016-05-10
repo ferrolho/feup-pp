@@ -94,8 +94,10 @@
 		$('#range-slider').on('slideStop', function (e) {
 			startLoading();
 
+			var page = $('.pagination li.active').text();
+
 			$.ajax({
-				url: getAjaxUrl(),
+				url: getAjaxUrl(page),
 				dataType: 'json'
 			}).done(function (data) {
 				$('.ajax-data').html(data);
@@ -110,8 +112,10 @@
 		$('input:radio[name=orderOptions]').on('change', function (e) {
 			startLoading();
 
+			var page = $('.pagination li.active').text();
+
 			$.ajax({
-				url: getAjaxUrl(),
+				url: getAjaxUrl(page),
 				dataType: 'json'
 			}).done(function (data) {
 				$('.ajax-data').html(data);
@@ -129,7 +133,7 @@
 			var page = $(this).attr('href').split('page=')[1];
 
 			$.ajax({
-				url: getAjaxUrl() + '?page=' + page,
+				url: getAjaxUrl(page),
 				dataType: 'json'
 			}).done(function (data) {
 				$('.ajax-data').html(data);
@@ -155,16 +159,17 @@
 	function getShareUrl() {
 		var page = $('.pagination li.active').text();
 
-		var url = APP_URL + getAjaxUrl() + '?page=' + page;
+		var url = APP_URL + getAjaxUrl(page);
 
 		return url;
 	}
 
-	function getAjaxUrl() {
+	function getAjaxUrl(page) {
 		var orderBy = $('input[name=orderOptions]:radio:checked').val();
 		var range = rangeSlider.slider('getValue');
+		var page = page || 1;
 
-		var url = '/correlations/bladder/' + orderBy + '/' + range[0] + '/' + range[1];
+		var url = '/correlations/bladder/' + orderBy + '/' + range[0] + '/' + range[1] + '?page=' + page;
 
 		//console.log(url);
 
