@@ -55,7 +55,7 @@ void resetTableDB(const string& tableName, sqlite3* db) {
 	cout << "Resetting DB table ... " << flush;
 
 	// drop table
-	string statement = "DROP TABLE IF EXISTS " + tableName;
+	string statement = "DROP TABLE IF EXISTS '" + tableName + "'";
 
 	sqlite3_exec(db, statement.c_str(), nullptr, nullptr, nullptr);
 
@@ -160,13 +160,16 @@ int main(int argc, char* argv[]) {
 		if (sqlite3_open("../../coexpr/database/database.sqlite", &db) == SQLITE_OK) {
 			cout << "OK!" << endl;
 
-			resetTableDB("correlations", db);
+			resetTableDB(tissueName, db);
 
 			sqlite3_exec(db, "PRAGMA synchronous = OFF", nullptr, nullptr, nullptr);
 			sqlite3_exec(db, "PRAGMA journal_mode = MEMORY", nullptr, nullptr, nullptr);
 
+			ostringstream ss;
+			ss << "INSERT INTO " << tissueName << " VALUES (NULL, @gene1, @gene2, @correlation)";
+
 			sqlite3_stmt* stmt;
-			sqlite3_prepare_v2(db, "INSERT INTO correlations VALUES (NULL, @gene1, @gene2, @correlation)", BUFFER_SIZE, &stmt, nullptr);
+			sqlite3_prepare_v2(db, ss.str().c_str(), BUFFER_SIZE, &stmt, nullptr);
 
 			int progress = 0;
 			sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
@@ -184,7 +187,7 @@ int main(int argc, char* argv[]) {
 
 					double pearson = calcPearson(tissueFile.values[geneToRow[mitocondrialGene]], tissueFile.values[geneToRow[tissueGene]]);
 
-					ostringstream ss;
+					ss.str(std::string());
 					ss << pearson;
 
 					sqlite3_bind_text(stmt, 1, mitocondrialGene.c_str(), -1, SQLITE_TRANSIENT);
@@ -207,7 +210,10 @@ int main(int argc, char* argv[]) {
 
 			cout << "Creating DB index (hang on just a bit more!) ... " << flush;
 
-			sqlite3_exec(db, "CREATE INDEX 'correlations_index' ON 'correlations' ('correlation')", nullptr, nullptr, nullptr);
+			ss.str(std::string());
+			ss << "CREATE INDEX '" << tissueName << "_index' ON '" << tissueName << "' ('correlation')";
+
+			sqlite3_exec(db, ss.str().c_str(), nullptr, nullptr, nullptr);
 
 			cout << "OK!" << endl;
 
