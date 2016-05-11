@@ -19,7 +19,7 @@
 	<!-- Bootstrap Core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
 
-	<!-- bootstrap-slider -->
+	<!-- bootstrap-slider.js -->
 	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" rel="stylesheet">
 
 	<!-- Template CSS -->

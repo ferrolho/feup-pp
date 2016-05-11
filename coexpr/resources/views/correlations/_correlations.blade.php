@@ -8,7 +8,8 @@
 				<input id="share-url" type="text" class="form-control" readonly>
 
 			<span class="input-group-btn">
-				<button id="share-url-btn" class="btn btn-default" type="button" data-clipboard-target="#share-url">
+				<button id="share-url-btn" class="btn btn-default" type="button" data-toggle="tooltip"
+						title="Copy to clipboard" data-clipboard-target="#share-url">
 					<img class="clippy" src="/assets/clippy.svg" alt="Copy to clipboard">
 				</button>
 			</span>

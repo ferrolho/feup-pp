@@ -66,6 +66,11 @@ body {
 	width: 15px;
 }
 
+.tooltip-inner {
+	white-space: nowrap;
+	max-width: none;
+}
+
 #loader {
 	display: none;
 	margin-top: 20px;
