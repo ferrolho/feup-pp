@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCorrelationsTable extends Migration {
+class CreateBladderTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -11,7 +11,7 @@ class CreateCorrelationsTable extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('correlations', function (Blueprint $table) {
+		Schema::create('bladder', function (Blueprint $table) {
 			$table->increments('id');
 
 			$table->string('gene1');
@@ -26,7 +26,7 @@ class CreateCorrelationsTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop('correlations');
+		Schema::drop('bladder');
 	}
 
 }

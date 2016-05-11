@@ -15,8 +15,8 @@ Route::get('/', function () {
 	return view('home');
 });
 
-Route::get('correlations', 'CorrelationsController@index');
-Route::get('correlations/bladder/{orderBy?}/{from?}/{to?}', 'CorrelationsController@bladder');
+Route::get('explorer', 'ExplorerController@index');
+Route::get('explorer/bladder/{orderBy?}/{from?}/{to?}', 'ExplorerController@bladder');
 
 Route::get('template', function () {
 	return view('landing-template');

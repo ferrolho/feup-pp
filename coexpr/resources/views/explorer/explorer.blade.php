@@ -29,7 +29,7 @@
 			<div class="col-xs-12 col-md-offset-2 col-md-8">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">Search filters</h3>
+						<h3 class="panel-title">{{ $tissueName }} - Search filters</h3>
 					</div>
 
 					<div class="panel-body">
@@ -63,7 +63,7 @@
 			</div>
 
 			<div class="ajax-data">
-				@include('correlations._correlations')
+				@include('explorer._explorer')
 			</div>
 
 		</div>
@@ -75,6 +75,7 @@
 <script>
 
 	var APP_URL = {!! json_encode(url('/')) !!};
+	var TISSUE_NAME = {!! json_encode(strtolower($tissueName)) !!};
 
 	var rangeSlider = $('#range-slider').slider({
 		id: "range-slider",
@@ -183,7 +184,7 @@
 		var range = rangeSlider.slider('getValue');
 		var page = page || 1;
 
-		var url = '/correlations/bladder/' + orderBy + '/' + range[0] + '/' + range[1] + '?page=' + page;
+		var url = '/explorer/' + TISSUE_NAME + '/' + orderBy + '/' + range[0] + '/' + range[1] + '?page=' + page;
 
 		//console.log(url);
 
