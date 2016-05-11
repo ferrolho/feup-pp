@@ -15,7 +15,6 @@ body {
 
 #content {
 	margin-top: 50px;
-	padding-top: 20px;
 }
 
 .vertical-center {
@@ -125,13 +124,17 @@ body {
 
 @media (min-width: 1200px) {
 	#tissues-list {
-		column-count: 4;
+		column-count: 3;
 	}
 }
 
 /*
 * Correlations
 */
+
+#search-panel {
+	margin-top: 20px;
+}
 
 #range-slider {
 	width: 100%;

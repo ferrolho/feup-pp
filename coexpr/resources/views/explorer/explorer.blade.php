@@ -27,7 +27,7 @@
 			</div>
 
 			<div class="col-xs-12 col-md-offset-2 col-md-8">
-				<div class="panel panel-primary">
+				<div id="search-panel" class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">{{ $tissueName }} <span class="pull-right">Search filters</span></h3>
 					</div>
