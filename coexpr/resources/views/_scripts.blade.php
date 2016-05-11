@@ -9,3 +9,9 @@
 
 <!-- clipboard.js -->
 <script src="/js/clipboard.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+</script>

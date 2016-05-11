@@ -98,8 +98,6 @@
 
 		$('#share-url').val(getShareUrl());
 
-		$('[data-toggle="tooltip"]').tooltip();
-
 		$('#share-url-btn').mouseleave(function () {
 			$('#share-url-btn').attr('title', 'Copy to clipboard').tooltip('fixTitle');
 		});
@@ -166,7 +164,10 @@
 
 	function doneLoading() {
 		$('#loader').hide();
+
 		$('#share-url').val(getShareUrl());
+
+		$('[data-toggle="tooltip"]').tooltip();
 	}
 
 	function getShareUrl() {
