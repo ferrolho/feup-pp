@@ -108,6 +108,28 @@ body {
 }
 
 /*
+* Tissues index
+*/
+
+@media (min-width: 768px) {
+	#tissues-list {
+		column-count: 1;
+	}
+}
+
+@media (min-width: 992px) {
+	#tissues-list {
+		column-count: 2;
+	}
+}
+
+@media (min-width: 1200px) {
+	#tissues-list {
+		column-count: 4;
+	}
+}
+
+/*
 * Correlations
 */
 

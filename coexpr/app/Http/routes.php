@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('explorer', 'ExplorerController@index');
-Route::get('explorer/bladder/{orderBy?}/{from?}/{to?}', 'ExplorerController@bladder');
+Route::get('explorer/{tissueName}/{orderBy?}/{from?}/{to?}', 'ExplorerController@explore');
 
 Route::get('template', function () {
 	return view('landing-template');

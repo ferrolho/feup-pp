@@ -1,12 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-use DB;
-use Request;
-use Response;
-
-class ExplorerController extends Controller {
+class CreateCorrelationsTables extends Migration {
 
 	private $tissues = [
 		"Adipose - Subcutaneous",
@@ -61,23 +58,32 @@ class ExplorerController extends Controller {
 		"Whole Blood"
 	];
 
-	public function index() {
-		return view('explorer.index')->with('tissues', $this->tissues);
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up() {
+		foreach ($this->tissues as $tissue) {
+			Schema::create($tissue, function (Blueprint $table) {
+				$table->increments('id');
+
+				$table->string('gene1');
+				$table->string('gene2');
+				$table->float('correlation');
+			});
+		}
 	}
 
-	public function explore($tissueName, $orderBy = 'desc', $from = 0.8, $to = 1) {
-		$tissueName = ucfirst($tissueName);
-
-		$correlations = DB::table($tissueName)
-			->where('correlation', '>=', $from)
-			->where('correlation', '<=', $to)
-			->orderBy('correlation', $orderBy)
-			->paginate(25);
-
-		if (Request::ajax())
-			return Response::json(view('explorer._explorer')->with('correlations', $correlations)->render());
-
-		return view('explorer.explorer', compact('tissueName', 'correlations', 'orderBy', 'from', 'to'));
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down() {
+		foreach ($this->tissues as $tissue) {
+			Schema::drop($tissue);
+		}
 	}
 
 }
