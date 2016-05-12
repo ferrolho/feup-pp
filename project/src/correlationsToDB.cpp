@@ -160,6 +160,8 @@ int main(int argc, char* argv[]) {
 		if (sqlite3_open("../../coexpr/database/database.sqlite", &db) == SQLITE_OK) {
 			cout << "OK!" << endl;
 
+			tissueName = str_slug(tissueName);
+
 			resetTableDB(tissueName, db);
 
 			sqlite3_exec(db, "PRAGMA synchronous = OFF", nullptr, nullptr, nullptr);

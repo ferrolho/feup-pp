@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 using namespace std;
 
@@ -34,4 +35,54 @@ vector<string> splitTSV(const string& str) {
 	tokenize(str, tokens, "\t");
 
 	return tokens;
+}
+
+/*
+* String manipulation functions
+*/
+
+string str_tolower(string str) {
+	transform(str.begin(), str.end(), str.begin(), ::tolower);
+
+	return str;
+}
+
+string str_trimChar(string str, char ch) {
+	for (unsigned int i = 0; i < str.size(); i++) {
+		while (str[i] == ch)
+			str.erase(str.begin() + i);
+	}
+
+	return str;
+}
+
+string str_replaceChar(string str, char ch, char newCh) {
+	for (unsigned int i = 0; i < str.size(); i++) {
+		if (str[i] == ch)
+			str[i] = newCh;
+	}
+
+	return str;
+}
+
+string str_trimEqualAdjacentChars(string str, char ch) {
+	for (unsigned int i = 1; i < str.size(); i++) {
+		while (str[i - 1] == ch && str[i] == ch)
+			str.erase(str.begin() + i);
+	}
+
+	return str;
+}
+
+string str_slug(string str) {
+	str = str_tolower(str);
+
+	str = str_trimChar(str, '(');
+	str = str_trimChar(str, ')');
+
+	str = str_replaceChar(str, ' ', '-');
+
+	str = str_trimEqualAdjacentChars(str, '-');
+
+	return str;
 }
