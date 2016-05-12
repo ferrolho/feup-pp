@@ -60,7 +60,7 @@ void resetTableDB(const string& tableName, sqlite3* db) {
 	sqlite3_exec(db, statement.c_str(), nullptr, nullptr, nullptr);
 
 	// create table
-	statement = "CREATE TABLE \"" + tableName + "\" ("
+	statement = "CREATE TABLE '" + tableName + "' ("
 	"\"id\" integer not null primary key autoincrement,"
 	"\"gene1\" varchar not null,"
 	"\"gene2\" varchar not null,"
@@ -168,7 +168,7 @@ int main(int argc, char* argv[]) {
 			sqlite3_exec(db, "PRAGMA journal_mode = MEMORY", nullptr, nullptr, nullptr);
 
 			ostringstream ss;
-			ss << "INSERT INTO " << tissueName << " VALUES (NULL, @gene1, @gene2, @correlation)";
+			ss << "INSERT INTO '" << tissueName << "' VALUES (NULL, @gene1, @gene2, @correlation)";
 
 			sqlite3_stmt* stmt;
 			sqlite3_prepare_v2(db, ss.str().c_str(), BUFFER_SIZE, &stmt, nullptr);
