@@ -39,13 +39,13 @@
 				<h2 class="section-heading">Henrique Ferrolho</h2>
 
 				<p>
-					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
-					<a href="//github.com/ferrolho">github.com/ferrolho</a>
+					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+					<a href="mailto:henrique.ferrolho@gmail.com">henrique.ferrolho@gmail.com</a>
 				</p>
 
 				<p>
-					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
-					<a href="mailto:henrique.ferrolho@gmail.com">henrique.ferrolho@gmail.com</a>
+					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
+					<a href="//github.com/ferrolho">github.com/ferrolho</a>
 				</p>
 			</div>
 
@@ -55,13 +55,13 @@
 				<h2 class="section-heading">João Bordalo</h2>
 
 				<p>
-					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
-					<a href="//github.com/joaobordalo">github.com/joaobordalo</a>
+					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+					<a href="mailto:bordalo.joao94@gmail.com">bordalo.joao94@gmail.com</a>
 				</p>
 
 				<p>
-					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
-					<a href="mailto:bordalo.joao94@gmail.com">bordalo.joao94@gmail.com</a>
+					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
+					<a href="//github.com/joaobordalo">github.com/joaobordalo</a>
 				</p>
 			</div>
 
@@ -71,13 +71,13 @@
 				<h2 class="section-heading">João Pereira</h2>
 
 				<p>
-					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
-					<a href="//github.com/joaofpereira">github.com/joaofpereira</a>
+					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+					<a href="mailto:pereiraffjoao1993@gmail.com">pereiraffjoao1993@gmail.com</a>
 				</p>
 
 				<p>
-					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
-					<a href="mailto:pereiraffjoao1993@gmail.com">pereiraffjoao1993@gmail.com</a>
+					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
+					<a href="//github.com/joaofpereira">github.com/joaofpereira</a>
 				</p>
 			</div>
 
@@ -86,15 +86,15 @@
 
 				<h2 class="section-heading">Rui Camacho</h2>
 
-				{{--<p>--}}
-				{{--<i class="fa fa-github fa-fw" aria-hidden="true"></i>--}}
-				{{--<a href="//github.com/ferrolho">github.com/ferrolho</a>--}}
-				{{--</p>--}}
-
 				<p>
 					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
 					<a href="mailto:rcamacho@fe.up.pt">rcamacho@fe.up.pt</a>
 				</p>
+
+				{{--<p>--}}
+				{{--<i class="fa fa-github fa-fw" aria-hidden="true"></i>--}}
+				{{--<a href="//github.com/ferrolho">github.com/ferrolho</a>--}}
+				{{--</p>--}}
 			</div>
 
 		</div>
