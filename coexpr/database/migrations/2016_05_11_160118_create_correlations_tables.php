@@ -65,7 +65,7 @@ class CreateCorrelationsTables extends Migration {
 	 */
 	public function up() {
 		foreach ($this->tissues as $tissue) {
-			Schema::create($tissue, function (Blueprint $table) {
+			Schema::create(str_slug($tissue), function (Blueprint $table) {
 				$table->increments('id');
 
 				$table->string('gene1');
@@ -82,7 +82,7 @@ class CreateCorrelationsTables extends Migration {
 	 */
 	public function down() {
 		foreach ($this->tissues as $tissue) {
-			Schema::drop($tissue);
+			Schema::drop(str_slug($tissue));
 		}
 	}
 
