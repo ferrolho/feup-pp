@@ -8,7 +8,7 @@
 
 					<h1>{{ Config::get('app.name') }}</h1>
 
-					<h3>A Template by Start Bootstrap</h3>
+					<h3>Mitochondrial protein genes browser</h3>
 
 					<hr class="intro-divider">
 

@@ -32,7 +32,7 @@
 						<h3 class="panel-title">{{ $tissueName }} <span class="pull-right">Search filters</span></h3>
 					</div>
 
-					<div class="panel-body">
+					<div class="panel-body text-center">
 						<form>
 							<div class="form-group">
 								<label for="range-slider">Correlations range</label>
@@ -40,7 +40,11 @@
 								<div class="col-xs-12">
 									<input id="range-slider" type="text" data-slider-value="[{{ $from }}, {{ $to }}]">
 								</div>
+
+								<div class="clearfix"></div>
 							</div>
+
+							<hr>
 
 							<div class="form-group">
 								<p><strong>Order by</strong></p>

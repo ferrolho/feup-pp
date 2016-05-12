@@ -1,20 +1,30 @@
-<a name="services"></a>
+<a name="team"></a>
 
 <div class="content-section-a">
 	<div class="container">
 		<div class="row">
+
 			<div class="col-lg-5 col-sm-6">
 				<hr class="section-heading-spacer">
 				<div class="clearfix"></div>
-				<h2 class="section-heading">Death to the Stock Photo:<br>Special Thanks</h2>
-				<p class="lead">A special thanks to <a target="_blank"
-													   href="http://join.deathtothestockphoto.com/">Death to the
-						Stock Photo</a> for providing the photographs that you see in this template. Visit their
-					website to become a member.</p>
+
+				<img class="img-responsive" src="img/feup.png" alt="">
 			</div>
+
 			<div class="col-lg-5 col-lg-offset-2 col-sm-6">
-				<img class="img-responsive" src="img/ipad.png" alt="">
+				<hr class="section-heading-spacer">
+				<div class="clearfix"></div>
+
+				<h2 class="section-heading">Made with <i class="fa fa-heart" aria-hidden="true"></i> at <a
+							href="//fe.up.pt">FEUP</a>:</h2>
+				<address>
+					<strong>Faculdade de Engenharia da Universidade do Porto</strong><br>
+					Rua Dr. Roberto Frias, s/n<br>
+					4200-465 Porto, Portugal<br>
+					<abbr title="Phone">P:</abbr> (+351) 225-081-400
+				</address>
 			</div>
+
 		</div>
 	</div>
 </div>
@@ -22,36 +32,51 @@
 <div class="content-section-b">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-				<hr class="section-heading-spacer">
-				<div class="clearfix"></div>
-				<h2 class="section-heading">3D Device Mockups<br>by PSDCovers</h2>
-				<p class="lead">Turn your 2D designs into high quality, 3D product shots in seconds using free
-					Photoshop actions by <a target="_blank" href="http://www.psdcovers.com/">PSDCovers</a>!
-					Visit their website to download some of their awesome, free photoshop actions!</p>
-			</div>
-			<div class="col-lg-5 col-sm-pull-6  col-sm-6">
-				<img class="img-responsive" src="img/dog.png" alt="">
-			</div>
-		</div>
-	</div>
-</div>
 
-<div class="content-section-a">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-5 col-sm-6">
-				<hr class="section-heading-spacer">
-				<div class="clearfix"></div>
-				<h2 class="section-heading">Google Web Fonts and<br>Font Awesome Icons</h2>
-				<p class="lead">This template features the 'Lato' font, part of the <a target="_blank"
-																					   href="http://www.google.com/fonts">Google
-						Web Font library</a>, as well as <a target="_blank" href="http://fontawesome.io">icons
-						from Font Awesome</a>.</p>
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<img class="img-thumbnail" src="//lorempixel.com/400/400/business/" alt="">
+
+				<h2 class="section-heading">Henrique Ferrolho</h2>
+
+				<p class="lead">
+					<i class="fa fa-github" aria-hidden="true"></i>
+					<a href="//github.com/ferrolho">github.com/ferrolho</a>
+				</p>
 			</div>
-			<div class="col-lg-5 col-lg-offset-2 col-sm-6">
-				<img class="img-responsive" src="img/phones.png" alt="">
+
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<img class="img-thumbnail" src="//lorempixel.com/400/400/business/" alt="">
+
+				<h2 class="section-heading">João Bordalo</h2>
+
+				<p class="lead">
+					<i class="fa fa-github" aria-hidden="true"></i>
+					<a href="//github.com/joaobordalo">github.com/joaobordalo</a>
+				</p>
 			</div>
+
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<img class="img-thumbnail" src="//lorempixel.com/400/400/business/" alt="">
+
+				<h2 class="section-heading">João Pereira</h2>
+
+				<p class="lead">
+					<i class="fa fa-github" aria-hidden="true"></i>
+					<a href="//github.com/joaofpereira">github.com/joaofpereira</a>
+				</p>
+			</div>
+
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<img class="img-thumbnail" src="//lorempixel.com/400/400/business/" alt="">
+
+				<h2 class="section-heading">Rui Camacho</h2>
+
+				{{--<p class="lead">--}}
+				{{--<i class="fa fa-github" aria-hidden="true"></i>--}}
+				{{--<a href="//github.com/ferrolho">github.com/ferrolho</a>--}}
+				{{--</p>--}}
+			</div>
+
 		</div>
 	</div>
 </div>
