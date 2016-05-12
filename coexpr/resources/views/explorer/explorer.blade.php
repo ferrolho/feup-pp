@@ -5,27 +5,6 @@
 	<div id="content" class="container">
 		<div class="row">
 
-			<div id="loader">
-				<div class="panel panel-default">
-					<div class="sk-circle">
-						<div class="sk-circle1 sk-child"></div>
-						<div class="sk-circle2 sk-child"></div>
-						<div class="sk-circle3 sk-child"></div>
-						<div class="sk-circle4 sk-child"></div>
-						<div class="sk-circle5 sk-child"></div>
-						<div class="sk-circle6 sk-child"></div>
-						<div class="sk-circle7 sk-child"></div>
-						<div class="sk-circle8 sk-child"></div>
-						<div class="sk-circle9 sk-child"></div>
-						<div class="sk-circle10 sk-child"></div>
-						<div class="sk-circle11 sk-child"></div>
-						<div class="sk-circle12 sk-child"></div>
-					</div>
-
-					<h4>Loading...</h4>
-				</div>
-			</div>
-
 			<div class="col-xs-12 col-md-offset-2 col-md-8">
 				<div id="search-panel" class="panel panel-primary">
 					<div class="panel-heading">
@@ -33,6 +12,9 @@
 					</div>
 
 					<div class="panel-body text-center">
+
+						@include('_loader')
+
 						<form>
 							<div class="form-group">
 								<label for="range-slider">Correlations range</label>

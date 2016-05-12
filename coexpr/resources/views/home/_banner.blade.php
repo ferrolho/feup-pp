@@ -15,7 +15,7 @@
 					<ul class="list-inline intro-social-buttons">
 						<li>
 							<a href="explorer" class="btn btn-default btn-lg">
-								<i class="fa fa-play fa-fw"></i> Start
+								<i class="fa fa-search fa-fw"></i> Start exploring
 							</a>
 						</li>
 					</ul>
