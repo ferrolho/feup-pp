@@ -4,7 +4,7 @@
 
 	@include('home._banner')
 
-	@include('home._services')
+	@include('home._team')
 
 	@include('home._contact')
 

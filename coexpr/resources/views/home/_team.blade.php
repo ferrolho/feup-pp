@@ -34,47 +34,67 @@
 		<div class="row">
 
 			<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-thumbnail" src="//lorempixel.com/400/400/business/" alt="">
+				<img class="img-thumbnail" src="/img/team/ferrolho.jpg" alt="">
 
 				<h2 class="section-heading">Henrique Ferrolho</h2>
 
-				<p class="lead">
-					<i class="fa fa-github" aria-hidden="true"></i>
+				<p>
+					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
 					<a href="//github.com/ferrolho">github.com/ferrolho</a>
+				</p>
+
+				<p>
+					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+					<a href="mailto:henrique.ferrolho@gmail.com">henrique.ferrolho@gmail.com</a>
 				</p>
 			</div>
 
 			<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-thumbnail" src="//lorempixel.com/400/400/business/" alt="">
+				<img class="img-thumbnail" src="/img/team/bordalo.jpg" alt="">
 
 				<h2 class="section-heading">João Bordalo</h2>
 
-				<p class="lead">
-					<i class="fa fa-github" aria-hidden="true"></i>
+				<p>
+					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
 					<a href="//github.com/joaobordalo">github.com/joaobordalo</a>
+				</p>
+
+				<p>
+					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+					<a href="mailto:bordalo.joao94@gmail.com">bordalo.joao94@gmail.com</a>
 				</p>
 			</div>
 
 			<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-thumbnail" src="//lorempixel.com/400/400/business/" alt="">
+				<img class="img-thumbnail" src="/img/team/botas.jpg" alt="">
 
 				<h2 class="section-heading">João Pereira</h2>
 
-				<p class="lead">
-					<i class="fa fa-github" aria-hidden="true"></i>
+				<p>
+					<i class="fa fa-github fa-fw" aria-hidden="true"></i>
 					<a href="//github.com/joaofpereira">github.com/joaofpereira</a>
+				</p>
+
+				<p>
+					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+					<a href="mailto:pereiraffjoao1993@gmail.com">pereiraffjoao1993@gmail.com</a>
 				</p>
 			</div>
 
 			<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-thumbnail" src="//lorempixel.com/400/400/business/" alt="">
+				<img class="img-thumbnail" src="/img/team/camacho.jpg" alt="">
 
 				<h2 class="section-heading">Rui Camacho</h2>
 
-				{{--<p class="lead">--}}
-				{{--<i class="fa fa-github" aria-hidden="true"></i>--}}
+				{{--<p>--}}
+				{{--<i class="fa fa-github fa-fw" aria-hidden="true"></i>--}}
 				{{--<a href="//github.com/ferrolho">github.com/ferrolho</a>--}}
 				{{--</p>--}}
+
+				<p>
+					<i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+					<a href="mailto:rcamacho@fe.up.pt">rcamacho@fe.up.pt</a>
+				</p>
 			</div>
 
 		</div>
