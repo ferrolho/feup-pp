@@ -1,5 +1,74 @@
 <?php
 
+$tissues = [
+	"Adipose - Subcutaneous",
+	"Adipose - Visceral (Omentum)",
+	"Adrenal Gland",
+	"Artery - Aorta",
+	"Artery - Coronary",
+	"Artery - Tibial",
+	"Bladder",
+	"Brain - Amygdala",
+	"Brain - Anterior cingulate cortex (BA24)",
+	"Brain - Caudate (basal ganglia)",
+	"Brain - Cerebellar Hemisphere",
+	"Brain - Cerebellum",
+	"Brain - Cortex",
+	"Brain - Frontal Cortex (BA9)",
+	"Brain - Hippocampus",
+	"Brain - Hypothalamus",
+	"Brain - Nucleus accumbens (basal ganglia)",
+	"Brain - Putamen (basal ganglia)",
+	"Brain - Spinal cord (cervical c-1)",
+	"Brain - Substantia nigra",
+	"Breast - Mammary Tissue",
+	"Cells - EBV-transformed lymphocytes",
+	"Cells - Transformed fibroblasts",
+	"Colon - Sigmoid",
+	"Colon - Transverse",
+	"Esophagus - Gastroesophageal Junction",
+	"Esophagus - Mucosa",
+	"Esophagus - Muscularis",
+	"Heart - Atrial Appendage",
+	"Heart - Left Ventricle",
+	"Kidney - Cortex",
+	"Liver",
+	"Lung",
+	"Minor Salivary Gland",
+	"Muscle - Skeletal",
+	"Nerve - Tibial",
+	"Ovary",
+	"Pancreas",
+	"Pituitary",
+	"Prostate",
+	"Skin - Not Sun Exposed (Suprapubic)",
+	"Skin - Sun Exposed (Lower leg)",
+	"Small Intestine - Terminal Ileum",
+	"Spleen",
+	"Stomach",
+	"Testis",
+	"Thyroid",
+	"Uterus",
+	"Vagina",
+	"Whole Blood"
+];
+
+$connections = [
+	'sqlite' => [
+		'driver' => 'sqlite',
+		'database' => env('DB_DATABASE', database_path('database.sqlite')),
+	],
+];
+
+foreach ($tissues as $tissue) {
+	$tissueSlug = str_slug($tissue);
+
+	$connections[$tissueSlug] = [
+		'driver' => 'sqlite',
+		'database' => database_path($tissueSlug . '.sqlite'),
+	];
+}
+
 return [
 
     /*
@@ -26,7 +95,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'sqlite'),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,41 +113,7 @@ return [
     |
     */
 
-    'connections' => [
-
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-        ],
-
-        'mysql' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-            'strict' => false,
-            'engine' => null,
-        ],
-
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'schema' => 'public',
-        ],
-
-    ],
+    'connections' => $connections,
 
     /*
     |--------------------------------------------------------------------------

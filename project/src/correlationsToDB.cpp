@@ -154,21 +154,24 @@ int main(int argc, char* argv[]) {
 		/*
 		* Open DB
 		*/
+		tissueName = str_slug(tissueName);
+
+		ostringstream ss;
+		ss << "../../coexpr/database/" << tissueName << ".sqlite";
+
 		sqlite3* db;
 
 		cout << "Opening DB ... ";
-		if (sqlite3_open("../../coexpr/database/database.sqlite", &db) == SQLITE_OK) {
+		if (sqlite3_open(ss.str().c_str(), &db) == SQLITE_OK) {
 			cout << "OK!" << endl;
-
-			tissueName = str_slug(tissueName);
 
 			resetTableDB(tissueName, db);
 
 			sqlite3_exec(db, "PRAGMA synchronous = OFF", nullptr, nullptr, nullptr);
 			sqlite3_exec(db, "PRAGMA journal_mode = MEMORY", nullptr, nullptr, nullptr);
 
-			ostringstream ss;
-			ss << "INSERT INTO '" << tissueName << "' VALUES (NULL, @gene1, @gene2, @correlation)";
+			ss.str(std::string());
+			ss << "INSERT INTO 'correlations' VALUES (NULL, @gene1, @gene2, @correlation)";
 
 			sqlite3_stmt* stmt;
 			sqlite3_prepare_v2(db, ss.str().c_str(), BUFFER_SIZE, &stmt, nullptr);
@@ -213,7 +216,7 @@ int main(int argc, char* argv[]) {
 			cout << "Creating DB index (hang on just a bit more!) ... " << flush;
 
 			ss.str(std::string());
-			ss << "CREATE INDEX '" << tissueName << "_index' ON '" << tissueName << "' ('correlation')";
+			ss << "CREATE INDEX 'correlations_index' ON 'correlations' ('correlation')";
 
 			sqlite3_exec(db, ss.str().c_str(), nullptr, nullptr, nullptr);
 

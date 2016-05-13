@@ -66,13 +66,14 @@ class ExplorerController extends Controller {
 	}
 
 	public function explore($tissueName, $orderBy = 'desc', $from = 0.8, $to = 1) {
-		$tissueName = ucfirst($tissueName);
-
-		$correlations = DB::table($tissueName)
+		$correlations = DB::connection($tissueName)
+			->table('correlations')
 			->where('correlation', '>=', $from)
 			->where('correlation', '<=', $to)
 			->orderBy('correlation', $orderBy)
 			->paginate(25);
+
+		$tissueName = ucfirst($tissueName);
 
 		if (Request::ajax())
 			return Response::json(view('explorer._explorer')->with('correlations', $correlations)->render());
