@@ -11,13 +11,13 @@
 |
 */
 
-//$app = new Illuminate\Foundation\Application(
-//    realpath(__DIR__.'/../')
-//);
-
-$app = new App\MyApp(
+$app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
 );
+
+//$app = new App\MyApp(
+//    realpath(__DIR__.'/../')
+//);
 
 /*
 |--------------------------------------------------------------------------
