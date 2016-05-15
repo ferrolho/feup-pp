@@ -34,7 +34,7 @@
 		<div class="row">
 
 			<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-thumbnail" src="/img/team/ferrolho.jpg" alt="">
+				<img class="img-thumbnail" src="img/team/ferrolho.jpg" alt="">
 
 				<h2 class="section-heading">Henrique Ferrolho</h2>
 
@@ -50,7 +50,7 @@
 			</div>
 
 			<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-thumbnail" src="/img/team/bordalo.jpg" alt="">
+				<img class="img-thumbnail" src="img/team/bordalo.jpg" alt="">
 
 				<h2 class="section-heading">João Bordalo</h2>
 
@@ -66,7 +66,7 @@
 			</div>
 
 			<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-thumbnail" src="/img/team/botas.jpg" alt="">
+				<img class="img-thumbnail" src="img/team/botas.jpg" alt="">
 
 				<h2 class="section-heading">João Pereira</h2>
 
@@ -82,7 +82,7 @@
 			</div>
 
 			<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-thumbnail" src="/img/team/camacho.jpg" alt="">
+				<img class="img-thumbnail" src="img/team/camacho.jpg" alt="">
 
 				<h2 class="section-heading">Rui Camacho</h2>
 
