@@ -9,14 +9,14 @@
 				<span class="icon-bar"></span>
 			</button>
 
-			<a class="navbar-brand topnav" href="/">{{ Config::get('app.name') }}</a>
+			<a class="navbar-brand topnav" href="{{ url('/') }}">{{ Config::get('app.name') }}</a>
 		</div>
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="/#home">Home</a></li>
-				<li><a href="/#team">Team</a></li>
-				<li><a href="/#contact">Contact</a></li>
+				<li><a href="{{ url('/#home') }}">Home</a></li>
+				<li><a href="{{ url('/#team') }}">Team</a></li>
+				<li><a href="{{ url('/#contact') }}">Contact</a></li>
 			</ul>
 		</div>
 	</div>

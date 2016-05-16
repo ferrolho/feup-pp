@@ -4,15 +4,15 @@
 			<div class="col-lg-12">
 				<ul class="list-inline">
 
-					<li><a href="/#home">Home</a></li>
+					<li><a href="{{ url('/#home') }}">Home</a></li>
 
 					<li class="footer-menu-divider">&sdot;</li>
 
-					<li><a href="/#team">Team</a></li>
+					<li><a href="{{ url('/#team') }}">Team</a></li>
 
 					<li class="footer-menu-divider">&sdot;</li>
 
-					<li><a href="/#contact">Contact</a></li>
+					<li><a href="{{ url('/#contact') }}">Contact</a></li>
 
 				</ul>
 
