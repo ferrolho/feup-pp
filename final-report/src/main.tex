@@ -1,0 +1,43 @@
+\documentclass{article}
+
+\usepackage[portuguese]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{appendix}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{import}
+\usepackage{menukeys}
+\usepackage{seqsplit}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\begin{document}
+
+\import{includes/}{cover.tex}
+
+\import{includes/}{abstract.tex}
+
+\tableofcontents
+\newpage
+
+\import{includes/}{introduction.tex}
+
+\import{includes/}{system-description.tex}
+
+\import{includes/}{conclusion.tex}
+
+\import{includes/}{improvements.tex}
+
+\import{includes/}{resources.tex}
+
+\import{includes/}{appendix.tex}
+
+\end{document}

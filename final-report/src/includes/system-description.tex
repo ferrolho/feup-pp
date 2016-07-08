@@ -1,0 +1,144 @@
+\section{Descrição do sistema}
+
+\subsection{Descrição conceptual}
+
+\subsubsection{Funcionalidades}
+
+Este projeto processa e organiza a informação genética de tecidos humanos presente num ficheiro com 4.7 GB em bases de dados adequadas. Por sua vez, essas bases de dados podem ser acedidas por uma plataforma simples e intuitiva, para que o utilizador possa pesquisar e navegar pela informação genética de uma forma \textit{user-friendly}.
+
+Essa plataforma permite a consulta dos coeficientes de correlação entre todas as combinações possíveis de pares de genes de proteínas mitocondriais para todos os tecidos humanos relevantes. É possível consultar os coeficientes para um tecido individual, e ainda filtrar esses resultados com base num intervalo de correlação. Também existe a opção de ordenar os resultados por ordem crescente ou decrescente de coeficiente de correlação.
+
+\subsubsection{Estrutura do programa}
+
+O projeto pode ser dividido em quatro módulos distintos, cada um com a sua própria função e contribuição para a plataforma final, que é o ponto de contacto com o utilizador final.
+
+Na figura \ref{fig:project-modules} é possível ver um diagrama dos módulos que constituem o projeto, tal como as suas inter-relações.
+
+\medskip
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\linewidth]{res/project-modules.png}
+    \caption{Diagrama dos módulos do projeto, as relações entre eles, e as interações com a informação.}
+    \label{fig:project-modules}
+\end{figure}
+
+\medskip
+
+O primeiro módulo é o \textit{Parser}. O \textit{Parser} é responsável por organizar, filtrar, e separar toda a informação contida no ficheiro genético de 4.7 GB disponibilizado em \href{http://www.gtexportal.org/}{GTEx Portal} - simbolizado pela nuvem, no diagrama. Esse ficheiro, contém informação de diversos tecidos, valores de amostras desses tecidos, e outras informações que não são relevantes para a finalidade da plataforma.
+
+Por estas razões, é apropriada a existência de um módulo inicial que trate e filtre a informação contida nesse ficheiro.
+
+\bigskip
+
+O segundo módulo é um \textit{script} muito simples. O seu propósito e fazer \textit{reset} às bases de dados do sistema, deixando-as preparadas para serem preenchidas pelo próximo módulo.
+
+\bigskip
+
+O terceiro módulo é um programa cuja tarefa é preencher as bases de dados dos tecidos, que por sua vez vão ser consultadas pela plataforma final. Os ficheiros gerados pelo módulo 1 - o \textit{Parser} - são o ponto de partida deste módulo que, com a informação contida nesses ficheiros, calcula o coeficiente de correlação para todos os pares de genes possíveis em cada tecido, e guarda essa informação na base de dados do tecido correspondente.
+
+\bigskip
+
+Finalmente, o quarto e último módulo é a plataforma direcionada ao utilizador final. Este módulo usa as bases de dados que são produto resultante dos três módulos anteriores.
+
+\subsubsection{Linguagens de programação}
+
+\begin{itemize}
+    \item C++, SQLite
+    
+    Os módulos 1 e 3 (o \textit{Parser} e o programa responsável por calcular os coeficientes de correlação) foram implementados em C++ 11.
+    
+    O módulo 3 usa ainda SQLite para poder gravar nas bases de dados a informação gerada nos seus cálculos.
+    
+    A linguagem de programação C++ enquadra-se nos paradigmas procedimental, e orientado a objetos. SQLite enquadra-se no paradigma declarativo.
+    
+    \item Bash
+    
+    O módulo 2 (o \textit{script} de \textit{reset} às bases de dados) é um \textit{Shell Script}.
+    
+    Os paradigmas em que se enquadra são o imperativo, e scripting.
+    
+    \item PHP, JavaScript, CSS, HTML
+    
+    O módulo 4 é a plataforma principal do projeto. Está implementado em Laravel, uma \textit{framework} de PHP.
+    
+    A plataforma segue um padrão MVC - \textit{Model}, \textit{View}, \textit{Controller}: os controladores foram implementados em PHP; as vistas foram construídas em HTML e CSS. Foi ainda usado JavaScript, e as bibliotecas de JavaScript: AJAX e jQuery, para tornar o motor de busca mais responsivo e dinâmico.
+    
+    PHP enquadra-se nos paradigmas procedimental, e orientado a objetos. JavaScript é também uma linguagem multi-paradigma: scripting, orientado a objetos (baseada em protótipos), imperativa, e funcional. HTML e CSS enquadram-se no paradigma declarativo.
+\end{itemize}
+
+\subsection{Implementação}
+
+\subsubsection{Detalhes da implementação}
+
+O módulo principal do projeto é a plataforma desenvolvida em Laravel. As bases de dados são uma parte fundamental da plataforma: se as bases de dados não estiverem preenchidas com os dados genéticos, a plataforma não tem qualquer utilidade.
+
+Assim sendo, todos os restantes módulos do projeto existem com a finalidade de processar o conteúdo do ficheiro inicial de 4.7 GB obtido no Portal GTEx. Esses módulos interagem uns com os outros, e podem ser vistos como uma "linha de montagem" que acaba por preencher devidamente as bases de dados da plataforma com a informação estritamente relevante e necessária.
+
+\bigskip
+
+O código-fonte em C++ 11 do primeiro módulo encontra-se no ficheiro \texttt{parser.cpp}. Este módulo processa o ficheiro inicial obtido no Portal GTEx: o programa separa o conteúdo desse ficheiro em múltiplos ficheiros, um para cada tecido relevante (sendo que os tecidos não relevantes têm menos de 10 amostras, e são descartados).
+
+\bigskip
+
+O \textit{script} de \textit{reset} às bases de dados constitui o segundo módulo, e foi implementado em \textit{Shell Script (Bash)}. O \textit{script} tem duas fases: uma primeira que apaga todos os ficheiros \texttt{.sqlite} existentes; e uma segunda que faz \texttt{touch} a todos os ficheiros \texttt{.sqlite} necessários para a plataforma.
+
+Depois da execução deste \textit{script}, as bases de dados encontram-se inicializadas e vazias, prontas a serem preenchidas pelo próximo módulo.
+
+\bigskip
+
+O terceiro módulo também foi implementado em C++ 11, e o seu código-fonte encontra-se no ficheiro \texttt{correlationsToDB.cpp}.
+
+Este módulo recebe um parâmetro que corresponde ao nome do tecido cuja base de dados se pretende preencher. O programa começa por processar o ficheiro do tecido correspondente, que foi preparado pelo \textit{Parser} (módulo 1). De seguida, o programa calcula o coeficiente da correlação de Pearson para todas as combinações possíveis entre um gene mitocondrial e todos os outros genes do tecido em questão. Finalmente, essa informação é gravada na base de dados do respetivo tecido (base de dados essa que foi inicializada pelo módulo 2), na forma do seguinte tuplo: \textit{(ID de correlação, gene mitocondrial, gene do tecido, coeficiente de correlação de Pearson)}.
+
+Foram ainda tomadas as seguintes medidas para otimizar e tornar mais rápida a inserção e leitura dos tuplos na base de dados:
+
+\begin{itemize}
+    \item O modo \textit{synchronous} do SQLite foi desativado
+    
+    \item O \textit{journal\_mode} foi definido para usar a memória RAM
+    
+    \item Os tuplos são inseridos todos numa transação
+    
+    \item As inserções são feitas através de um \textit{prepared statement}
+    
+    \item Todas as bases de dados têm um índice afeto à coluna da correlação para aumentar a velocidade dos \textit{selects}
+\end{itemize}
+
+\bigskip
+
+O quarto e último módulo é a plataforma, desenvolvida em Laravel (uma \textit{framework} de PHP). O código-fonte de toda a plataforma encontra-se dentro da pasta \texttt{coexpr}.
+
+A plataforma é um motor de busca e uma ferramenta de visualização do conteúdo das bases de dados, que é inserido pelo módulo anterior.
+
+\subsubsection{Ambiente de desenvolvimento}
+
+De seguida é apresentada uma descrição do ambiente de desenvolvimento, e as versões de cada ferramenta utilizada.
+
+\medskip
+
+\textbf{Sistema Operativo:} Linux
+
+\textbf{Distribuição:} Ubuntu 16.04 LTS
+
+\medskip
+
+\textbf{Sublime Text 3:} Build 3114
+
+\textbf{gcc version:} 5.3.1
+
+\textbf{SQLite version:} 3.11.0
+
+\medskip
+
+\textbf{PhpStorm:} 2016.1.2
+
+\textbf{JRE:} 1.8.0\_76-release-b198 amd64
+
+\textbf{PHP Version:} 7.0.4-7
+
+\textbf{Composer version:} 1.1.2
+
+\textbf{Laravel Framework version:} 5.2.39
+
+\newpage
